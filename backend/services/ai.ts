@@ -1,17 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
-import { Configuration, OpenAIApi } from 'openai';
+import { GeminiClient } from '@google/gemini';
 
 // Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Initialize OpenAI client
-const openAiApiKey = process.env.OPENAI_API_KEY || '';
-const openAiConfig = new Configuration({
-  apiKey: openAiApiKey,
-});
-const openAi = new OpenAIApi(openAiConfig);
+// Initialize Gemini client
+const geminiApiKey = process.env.GEMINI_API_KEY || '';
+const gemini = new GeminiClient({ apiKey: geminiApiKey });
 
 /**
  * Queries the Supabase Vector database for relevant context based on the input query.
@@ -19,16 +16,15 @@ const openAi = new OpenAIApi(openAiConfig);
  * @returns An array of relevant context strings.
  */
 async function getRelevantContext(query: string): Promise<string[]> {
-  const embeddingResponse = await openAi.createEmbedding({
-    model: 'text-embedding-ada-002',
-    input: query,
+  const embeddingResponse = await gemini.generateEmbedding({
+    text: query,
   });
 
-  if (!embeddingResponse.data || !embeddingResponse.data.data.length) {
+  if (!embeddingResponse || !embeddingResponse.embedding) {
     throw new Error('Failed to generate embedding for the query.');
   }
 
-  const [{ embedding }] = embeddingResponse.data.data;
+  const embedding = embeddingResponse.embedding;
 
   const { data, error } = await supabase.rpc('match_documents', {
     query_embedding: embedding,
@@ -53,23 +49,22 @@ async function generateResponse(query: string): Promise<string> {
 
   const prompt = `
     You are an AI assistant. Use the following context to answer the user's question:
-    Context: ${context.join('\\n')}
+    Context: ${context.join('\\\n')}
     Question: ${query}
     Answer:
   `;
 
-  const completionResponse = await openAi.createCompletion({
-    model: 'text-davinci-003',
+  const completionResponse = await gemini.generateText({
     prompt,
-    max_tokens: 500,
+    maxTokens: 500,
     temperature: 0.7,
   });
 
-  if (!completionResponse.data || !completionResponse.data.choices.length) {
+  if (!completionResponse || !completionResponse.text) {
     throw new Error('Failed to generate a response.');
   }
 
-  return completionResponse.data.choices[0].text.trim();
+  return completionResponse.text.trim();
 }
 
 export { getRelevantContext, generateResponse };
@@ -146,7 +141,7 @@ async function generateResponse(query: string): Promise<string> {
 
   const prompt = `
     You are an AI assistant. Use the following context to answer the user's question:
-    Context: ${context.join('\\n')}
+    Context: ${context.join('\\\n')}
     Question: ${query}
     Answer:
   `;

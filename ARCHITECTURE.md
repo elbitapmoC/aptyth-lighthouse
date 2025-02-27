@@ -76,14 +76,14 @@ aptyth-lighthouse/
 - **Key Features:**
   - **Hono Framework:** Lightweight web framework for building APIs.
   - **Supabase Integration:** Used for vector search and AI-related functionality.
-  - **AI Services:** OpenAI's GPT models are used for embedding generation and response generation.
+  - **AI Services:** Google's Gemini models are used for embedding generation and response generation.
 
 ### 5. **AI Integration**
-- **Why OpenAI and Supabase?**
-  - OpenAI provides state-of-the-art language models for embedding and response generation.
+- **Why Google's Gemini and Supabase?**
+  - Google's Gemini provides advanced language models for embedding and response generation.
   - Supabase Vector enables efficient similarity searches for context retrieval.
 - **Implementation:**
-  - `backend/services/ai.ts` handles embedding generation, context retrieval, and response generation.
+  - `backend/services/ai.ts` handles embedding generation, context retrieval, and response generation using Google's Gemini.
 
 ### 6. **Linting and Formatting: Biome**
 - **Why Biome?**
