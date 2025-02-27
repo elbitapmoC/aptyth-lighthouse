@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+});
+
 const nextConfig = {
   i18n: {
     // Supported locales for the application
@@ -10,7 +16,7 @@ const nextConfig = {
   swcMinify: true,
 };
 
-module.exports = nextConfig;
+module.exports = withPWA(nextConfig);
 ```
 
 ### Step 4: Review the code and the user request
