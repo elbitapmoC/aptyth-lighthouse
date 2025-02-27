@@ -1,4 +1,8 @@
 import { Hono } from 'hono';
+import supabase from './db/supabase';
+import planetscale from './db/planetscale';
+import typesense from './search/typesense';
+import clerk from './auth/clerk';
 
 const app = new Hono();
 
@@ -8,6 +12,32 @@ app.get('/', (c) => {
     message: 'Welcome to the Aptyth Lighthouse Deno backend!',
     status: 'healthy',
   });
+});
+
+// Define a services check route
+app.get('/services', async (c) => {
+  try {
+    // Test Supabase connection
+    const { data: supabaseData } = await supabase.from('test_table').select('*').limit(1);
+
+    // Test PlanetScale connection
+    const [planetscaleData] = await planetscale.execute('SELECT 1 AS test');
+
+    // Test Typesense connection
+    const typesenseHealth = await typesense.health();
+
+    // Test Clerk connection
+    const clerkHealth = clerk ? 'Clerk client initialized' : 'Clerk client not initialized';
+
+    return c.json({
+      supabase: supabaseData ? 'Connected' : 'Not connected',
+      planetscale: planetscaleData ? 'Connected' : 'Not connected',
+      typesense: typesenseHealth.ok ? 'Connected' : 'Not connected',
+      clerk: clerkHealth,
+    });
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
 // Start the server on port 8000
