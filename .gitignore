@@ -45,6 +45,16 @@ jspm_packages/
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
+# Deno-specific files
+deno.lock
+backend/import_map.json
+
+# Biome configuration
+biome.json
+
+# Tailwind CSS artifacts
+tailwind.config.js
+
 # TypeScript cache
 *.tsbuildinfo
 
