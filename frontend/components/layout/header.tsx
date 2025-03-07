@@ -27,6 +27,12 @@ export default function Header() {
           >
             Contact
           </Link>
+          <button
+            className="text-sm font-medium px-4 py-2 rounded-md bg-primary text-background hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-background"
+            onClick={() => alert("Coming Soon!")}
+          >
+            Subscribe
+          </button>
         </nav>
       </div>
     </header>
