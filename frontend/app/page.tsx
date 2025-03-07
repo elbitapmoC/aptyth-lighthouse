@@ -1,4 +1,7 @@
 import { Button } from "@/components/ui/button";
+import Glow from "@/components/ui/magicui/glow";
+import Spotlight from "@/components/ui/magicui/spotlight";
+import TextGradient from "@/components/ui/magicui/text-gradient";
 import Image from "next/image";
 
 export default function Home() {
@@ -6,9 +9,7 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen p-8 sm:p-20 bg-background text-foreground">
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold">
-          <TextGradient>
-            Welcome to Lighthouse Bible Platform
-          </TextGradient>
+          <TextGradient>Welcome to Lighthouse Bible Platform</TextGradient>
         </h1>
         <p className="text-lg mt-4">
           Your gateway to exploring the Word of God.
