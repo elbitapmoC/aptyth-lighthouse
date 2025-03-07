@@ -6,7 +6,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ["example.com"], // Replace with your allowed image domains
+    domains: ["example.com", "cdn.serwist.com"], // Added Serwist CDN domain
   },
   env: {
     SERWIST_API_URL: process.env.SERWIST_API_URL || "https://api.serwist.com",
