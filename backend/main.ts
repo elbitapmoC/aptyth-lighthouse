@@ -25,7 +25,10 @@ app.use(errorHandler);
 app.use(router.routes());
 app.use(router.allowedMethods());
 
+import wss from "./websocket/mod.ts";
+
 // Start the server
 const PORT = Deno.env.get("PORT") || 8000;
 console.log(`Server is running on http://localhost:${PORT}`);
+console.log(`WebSocket server is running on ws://localhost:8080`);
 await app.listen({ port: +PORT });
