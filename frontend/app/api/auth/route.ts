@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import pool from "@/lib/db";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key";
-const SALT_ROUNDS = 10;
+const SALT_ROUNDS = 12;
 
 /**
  * Handles POST requests for user authentication.
