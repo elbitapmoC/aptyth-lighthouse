@@ -3,6 +3,8 @@ import { Pool } from "@neondatabase/serverless";
 const pool = new Pool({
   connectionString: process.env.NEON_DATABASE_URL,
   ssl: true,
+  max: 10, // Maximum number of clients in the pool
+  idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
 });
 
 /**
@@ -16,6 +18,9 @@ export async function query(text: string, params?: Array<any>): Promise<any> {
   try {
     const result = await client.query(text, params);
     return result.rows;
+  } catch (error) {
+    console.error("Database query error:", error);
+    throw new Error("Failed to execute database query");
   } finally {
     client.release();
   }

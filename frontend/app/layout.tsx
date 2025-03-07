@@ -19,18 +19,23 @@ export const metadata: Metadata = {
 
 import Header from "../components/layout/header";
 import Footer from "../components/layout/footer";
+import ThemeToggle from "../components/ui/theme-toggle";
+import useStore from "../lib/store";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { theme } = useStore();
+
   return (
-    <html lang="en">
+    <html lang="en" className={theme}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header />
+        <ThemeToggle />
         <main>{children}</main>
         <Footer />
       </body>
