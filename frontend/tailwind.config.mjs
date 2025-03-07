@@ -3,7 +3,7 @@ import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
 import animate from "tailwindcss-animate";
 
-export default {
+const config = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
@@ -25,4 +25,6 @@ export default {
     },
   },
   plugins: [forms, typography, animate],
-}
+};
+
+export default config;
