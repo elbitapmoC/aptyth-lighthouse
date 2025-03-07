@@ -1,8 +1,10 @@
 import { Pool } from "@neondatabase/serverless";
 
 const pool = new Pool({
-  connectionString: process.env.NEON_DATABASE_URL,
-  ssl: true,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 /**
