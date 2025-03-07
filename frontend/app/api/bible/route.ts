@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
+import { NextResponse } from "next/server";
 
 /**
  * Fetches Bible content based on the provided book and chapter.
@@ -30,7 +30,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const chapterNumber = parseInt(chapter, 10);
+  const chapterNumber = Number.parseInt(chapter, 10);
   if (isNaN(chapterNumber) || chapterNumber <= 0) {
     return NextResponse.json(
       { error: "Invalid chapter number. It must be a positive integer." },

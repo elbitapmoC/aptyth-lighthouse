@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+import pool from "@/lib/db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import pool from "@/lib/db";
+import { NextResponse } from "next/server";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key";
 const SALT_ROUNDS = 12;
