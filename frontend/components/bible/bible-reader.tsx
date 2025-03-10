@@ -1,39 +1,34 @@
 "use client";
 
 import React, { useState } from "react";
+import useBibleContent from "@/hooks/useBibleContent";
 
 export default function BibleReader() {
   const [chapter, setChapter] = useState(1);
-  const [content, setContent] = useState("Loading...");
-
-  const fetchChapter = async (chapterNumber: number) => {
-    // Simulate fetching chapter content
-    const simulatedContent = `This is the content of chapter ${chapterNumber}.`;
-    setContent(simulatedContent);
-  };
+  const { verses, isLoading, isError, error } = useBibleContent("Genesis", chapter);
 
   const handleNextChapter = () => {
-    const nextChapter = chapter + 1;
-    setChapter(nextChapter);
-    fetchChapter(nextChapter);
+    setChapter((prevChapter) => prevChapter + 1);
   };
 
   const handlePreviousChapter = () => {
-    if (chapter > 1) {
-      const previousChapter = chapter - 1;
-      setChapter(previousChapter);
-      fetchChapter(previousChapter);
-    }
+    setChapter((prevChapter) => (prevChapter > 1 ? prevChapter - 1 : prevChapter));
   };
-
-  React.useEffect(() => {
-    fetchChapter(chapter);
-  }, [chapter]);
 
   return (
     <div className="p-4 bg-card text-card-foreground rounded-md shadow-md">
       <h2 className="text-xl font-bold mb-4">Chapter {chapter}</h2>
-      <p className="mb-4">{content}</p>
+      {isLoading && <p className="mb-4">Loading...</p>}
+      {isError && <p className="mb-4 text-red-500">Error: {error?.message}</p>}
+      {!isLoading && !isError && (
+        <div className="mb-4">
+          {verses?.map((verse) => (
+            <p key={verse.verse_number}>
+              <strong>{verse.verse_number}</strong> {verse.text}
+            </p>
+          ))}
+        </div>
+      )}
       <div className="flex justify-between">
         <button
           onClick={handlePreviousChapter}
