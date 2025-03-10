@@ -36,19 +36,5 @@ installSerwist({
         },
       },
     },
-    {
-      urlPattern: /^\/api\/bible\/.*/i,
-      handler: "NetworkFirst",
-      options: {
-        cacheName: "api-bible-content",
-        expiration: {
-          maxEntries: 30,
-          maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
-        },
-        cacheableResponse: {
-          statuses: [0, 200],
-        },
-      },
-    },
   ],
 });

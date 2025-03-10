@@ -1,31 +1,5 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Component Documentation with Ladle
-
-This project uses [Ladle](https://www.ladle.dev/) for documenting and exploring UI components. Ladle provides an interactive environment to view and test components in isolation.
-
-### Running Ladle
-
-To start the Ladle component explorer, run:
-
-```bash
-npm run ladle
-# or
-yarn ladle
-# or
-pnpm ladle
-```
-
-Open [http://localhost:61000](http://localhost:61000) in your browser to explore the components.
-
-### Adding Stories
-
-Stories for components are located in the `frontend/stories` directory. Each story file demonstrates the usage of a specific component. For example:
-- `Button.stories.tsx` showcases the `Button` component.
-- `ThemeToggle.stories.tsx` showcases the `ThemeToggle` component.
-
-Refer to the [Ladle documentation](https://www.ladle.dev/docs/introduction/) for more details on creating and managing stories.
-
 ## Getting Started
 
 First, run the development server:

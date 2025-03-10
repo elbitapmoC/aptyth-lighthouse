@@ -1,5 +1,5 @@
+import type { Context, Middleware } from "oak";
 import { z } from "zod";
-import { Context, Middleware } from "oak";
 
 /**
  * Validation middleware using Zod to validate request data.
