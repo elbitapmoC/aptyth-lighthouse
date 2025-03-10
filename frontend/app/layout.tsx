@@ -44,8 +44,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>
-          <Header />
-          <ThemeToggle />
+          <AuthProvider>
+            <Header />
+            <ThemeToggle />
           <main>{children}</main>
           <Footer />
         </QueryProvider>

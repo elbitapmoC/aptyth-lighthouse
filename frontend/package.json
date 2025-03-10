@@ -6,12 +6,12 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "biome check .",
     "ladle": "ladle serve",
     "ladle:build": "ladle build",
     "test": "jest",
-    "format:check": "prettier --check .",
-    "format": "prettier --write ."
+    "format:check": "biome format --check .",
+    "format": "biome format ."
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.2",

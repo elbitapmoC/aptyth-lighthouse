@@ -5,7 +5,7 @@ echo "Running pre-commit checks..."
 
 # Run linting
 echo "Running linter..."
-npm run lint
+npm run biome:lint
 if [ $? -ne 0 ]; then
   echo "Linter failed. Please fix the issues before committing."
   exit 1
@@ -13,9 +13,9 @@ fi
 
 # Run formatting check
 echo "Checking code formatting..."
-npm run format:check
+npm run biome:check
 if [ $? -ne 0 ]; then
-  echo "Code formatting issues detected. Please run 'npm run format' to fix them."
+  echo "Code formatting issues detected. Please run 'npm run biome:format' to fix them."
   exit 1
 fi
 
