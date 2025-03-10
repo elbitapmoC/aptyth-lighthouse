@@ -22,6 +22,25 @@ export const metadata: Metadata = {
     title: "Lighthouse Bible Platform",
     statusBarStyle: "default",
   },
+  icons: [
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "192x192",
+      url: "/icons/icon-192x192.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "512x512",
+      url: "/icons/icon-512x512.png",
+    },
+    {
+      rel: "apple-touch-icon",
+      sizes: "180x180",
+      url: "/icons/apple-touch-icon.png",
+    },
+  ],
 };
 
 import Footer from "../components/layout/footer";
