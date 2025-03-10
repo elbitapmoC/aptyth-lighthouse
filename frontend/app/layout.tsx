@@ -46,6 +46,7 @@ export const metadata: Metadata = {
 import Footer from "../components/layout/footer";
 import Header from "../components/layout/header";
 import ThemeToggle from "../components/ui/ThemeToggle";
+import PWAInstallPrompt from "../components/ui/PWAInstallPrompt";
 import useStore from "../lib/store";
 
 export default function RootLayout({
@@ -63,6 +64,7 @@ export default function RootLayout({
         <Header />
         <ThemeToggle />
         <main>{children}</main>
+        <PWAInstallPrompt />
         <Footer />
       </body>
     </html>
