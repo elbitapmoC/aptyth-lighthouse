@@ -1,16 +1,16 @@
 {
   "home": {
-    "title": "Bienvenido a nuestro sitio web",
-    "description": "Este es el mejor lugar para encontrar contenido increíble."
+    "title": "Welcome to our website",
+    "description": "This is the best place to find amazing content."
   },
   "navbar": {
-    "home": "Inicio",
-    "about": "Acerca de",
-    "contact": "Contacto"
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
   },
   "footer": {
-    "copyright": "© 2023 Tu Empresa. Todos los derechos reservados.",
-    "privacyPolicy": "Política de Privacidad",
-    "termsOfService": "Términos de Servicio"
+    "copyright": "© 2023 Your Company. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
   }
 }

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 const API_BASE_URL = "http://localhost:8000"; // Replace with your Deno backend URL
 
@@ -58,6 +59,33 @@ export async function fetchBibleContent(book: string, chapter: number): Promise<
     console.error("Failed to fetch Bible content:", error);
     throw new Error("Unable to fetch Bible content.");
   }
+}
+
+/**
+ * React Query hook for fetching Bible content.
+ * @param book - The name of the book in the Bible.
+ * @param chapter - The chapter number.
+ */
+export function useBibleContent(book: string, chapter: number) {
+  return useQuery(["bibleContent", book, chapter], () => fetchBibleContent(book, chapter));
+}
+
+/**
+ * React Query hook for user login.
+ */
+export function useLogin() {
+  return useMutation(({ email, password }: { email: string; password: string }) =>
+    login(email, password)
+  );
+}
+
+/**
+ * React Query hook for user registration.
+ */
+export function useRegister() {
+  return useMutation(({ email, password }: { email: string; password: string }) =>
+    register(email, password)
+  );
 }
 
 export default apiClient;
