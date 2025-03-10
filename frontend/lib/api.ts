@@ -44,4 +44,20 @@ export async function register(email: string, password: string): Promise<number>
   }
 }
 
+/**
+ * Fetches Bible content from the Deno backend.
+ * @param book - The name of the book in the Bible.
+ * @param chapter - The chapter number.
+ * @returns A promise resolving to the Bible content for the specified book and chapter.
+ */
+export async function fetchBibleContent(book: string, chapter: number): Promise<any> {
+  try {
+    const response = await apiClient.get(`/bible?book=${encodeURIComponent(book)}&chapter=${chapter}`);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch Bible content:", error);
+    throw new Error("Unable to fetch Bible content.");
+  }
+}
+
 export default apiClient;
