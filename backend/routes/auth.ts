@@ -1,5 +1,5 @@
 import { Router } from "oak";
-import { compare } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import { create, verify } from "djwt";
 import db from "@/db/postgres.ts";
 
