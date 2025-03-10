@@ -1,4 +1,4 @@
-import { Client } from "@/db/postgres.ts";
+import { Client } from "postgres";
 
 declare const Deno: {
   env: {
