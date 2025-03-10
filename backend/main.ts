@@ -1,8 +1,8 @@
 import { oakCors } from "cors";
 import { Application } from "oak";
-import { errorHandler } from "./middleware/errorHandler.ts";
-import { logger } from "./middleware/logger.ts";
-import router from "./routes/mod.ts";
+import { errorHandler } from "@/middleware/errorHandler.ts";
+import { logger } from "@/middleware/logger.ts";
+import router from "@/routes/mod.ts";
 
 // Create a new Oak application
 const app = new Application();

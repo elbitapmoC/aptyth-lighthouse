@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useStore } from "@/lib/store";
+import { useStore } from "../../lib/store";
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useStore();

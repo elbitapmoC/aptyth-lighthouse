@@ -5,7 +5,10 @@ type ThemeState = {
   setTheme: (theme: "light" | "dark") => void;
 };
 
-export const useStore = create<ThemeState>((set) => ({
+const useStore = create<ThemeState>((set) => ({
   theme: "light",
   setTheme: (theme) => set({ theme }),
 }));
+
+export { useStore };
+export default useStore;
