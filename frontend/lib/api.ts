@@ -61,7 +61,7 @@ export async function register(email: string, password: string): Promise<number>
  * @param chapter - The chapter number.
  * @returns A promise resolving to the Bible content for the specified book and chapter.
  */
-export async function fetchBibleContent(book: string, chapter: number): Promise<any> {
+export async function fetchBibleContent(book: string, chapter: number): Promise<{ book: string; chapter: number; verses: { verse_number: number; text: string }[] }> {
   try {
     const response = await apiClient.get(`/bible?book=${encodeURIComponent(book)}&chapter=${chapter}`);
     return response.data;
