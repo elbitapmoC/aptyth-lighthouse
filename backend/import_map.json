@@ -10,4 +10,4 @@
     "@/config": "./config.ts",
     "@/db/": "./db/"
   }
-}i
+}
