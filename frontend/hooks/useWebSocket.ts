@@ -33,7 +33,7 @@ export default function useWebSocket(url: string) {
   };
 
   useEffect(() => {
-    const socket = new WebSocket(url);
+    const socket = new WebSocket(process.env.NEXT_PUBLIC_WEBSOCKET_URL || url);
     socketRef.current = socket;
 
     socket.onopen = () => {
