@@ -1,5 +1,5 @@
 import { Router } from "oak";
-import db from "postgres";
+import db from "../db/postgres.ts";
 
 const router = new Router();
 

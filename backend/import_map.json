@@ -5,5 +5,8 @@
     "bcrypt": "https://deno.land/x/bcrypt/mod.ts",
     "djwt": "https://deno.land/x/djwt/mod.ts",
     "postgres": "https://deno.land/x/postgres/mod.ts"
-  }
+  },
+  "@/routes/": "./routes/",
+  "@/middleware/": "./middleware/",
+  "@/config": "./config.ts"
 }

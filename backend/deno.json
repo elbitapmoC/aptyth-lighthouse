@@ -1,8 +1,8 @@
 {
   "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
   "tasks": {
-    "start": "deno run --allow-net --allow-env --allow-read backend/main.ts",
-    "test": "deno test --allow-net --allow-env --allow-read"
+    "start": "deno run --allow-net --allow-env --allow-read --import-map=backend/import_map.json backend/main.ts",
+    "test": "deno test --allow-net --allow-env --allow-read --import-map=backend/import_map.json"
   },
   "permissions": {
     "allow-net": ["localhost:3000", "localhost:8000"],
