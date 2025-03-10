@@ -1,4 +1,4 @@
-import { Client } from "postgres";
+import { Client } from "postgres/mod.ts/mod.ts";
 import config from "@/config";
 
 // Ensure the DATABASE_URL is provided

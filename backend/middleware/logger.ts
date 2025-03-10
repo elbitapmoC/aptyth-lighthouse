@@ -10,7 +10,7 @@ const logger: Middleware = async (ctx: Context, next: () => Promise<unknown>) =>
   const ms = performance.now() - start; // Calculate the response time
 
   // Log the HTTP method, URL, and response time
-  console.log(`${ctx.request.method} ${ctx.request.url} - ${ms.toFixed(2)}ms`);
+  console.info(`${ctx.request.method} ${ctx.request.url} - ${ms.toFixed(2)}ms`);
 };
 
 export { logger };

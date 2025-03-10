@@ -1,0 +1,35 @@
+{
+  "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.jsonc",
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM"],
+    "module": "ESNext",
+    "strict": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/routes/*": ["./routes/*"],
+      "@/middleware/*": ["./middleware/*"],
+      "@/config": ["./config.ts"],
+      "@/db/*": ["./db/*"]
+    }
+  },
+  "tasks": {
+    "start": "deno run --allow-net --allow-env --allow-read --import-map=backend/import_map.json backend/main.ts",
+    "test": "deno test --allow-net --allow-env --allow-read --import-map=backend/import_map.json"
+  },
+  "importMap": "./import_map.json",
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "options": {
+      "useTabs": false,
+      "lineWidth": 80,
+      "indentWidth": 2,
+      "singleQuote": false,
+      "proseWrap": "preserve"
+    }
+  }
+}

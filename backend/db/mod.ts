@@ -1,4 +1,11 @@
-import { Client } from "postgres";
+import { Client } from "@/db/postgres.ts";
+
+declare const Deno: {
+  env: {
+    get(key: string): string | undefined;
+  };
+};
+
 const DATABASE_URL = Deno.env.get("DATABASE_URL") || "";
 
 // Ensure the DATABASE_URL is provided
