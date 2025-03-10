@@ -1,4 +1,4 @@
-import { Context, Middleware } from "https://deno.land/x/oak/mod.ts";
+import { Context, Middleware } from "oak";
 
 /**
  * CORS middleware to allow requests from the Next.js frontend.

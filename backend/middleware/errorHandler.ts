@@ -1,4 +1,4 @@
-import { Context, Middleware } from "https://deno.land/x/oak/mod.ts";
+import { Context, Middleware } from "oak";
 
 /**
  * Middleware to handle errors in the Deno backend.

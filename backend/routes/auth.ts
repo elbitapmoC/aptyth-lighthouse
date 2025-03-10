@@ -1,7 +1,7 @@
-import { Router } from "https://deno.land/x/oak/mod.ts";
-import { compare } from "https://deno.land/x/bcrypt/mod.ts";
-import { create, verify } from "https://deno.land/x/djwt/mod.ts";
-import db from "../db/mod.ts";
+import { Router } from "oak";
+import { compare } from "bcrypt";
+import { create, verify } from "djwt";
+import db from "postgres";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "your_jwt_secret_key";
 const SALT_ROUNDS = 12;

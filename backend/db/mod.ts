@@ -1,5 +1,4 @@
-import { Client } from "https://deno.land/x/postgres/mod.ts";
-
+import { Client } from "postgres";
 const DATABASE_URL = Deno.env.get("DATABASE_URL") || "";
 
 // Ensure the DATABASE_URL is provided
