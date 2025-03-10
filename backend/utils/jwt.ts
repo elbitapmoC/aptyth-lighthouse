@@ -1,6 +1,9 @@
 import { create, verify, Payload } from "https://deno.land/x/djwt/mod.ts";
 
-const JWT_SECRET = Deno.env.get("JWT_SECRET") || "your_jwt_secret_key";
+const JWT_SECRET = Deno.env.get("JWT_SECRET");
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is not set.");
+}
 
 /**
  * Generates a JWT token.

@@ -15,19 +15,23 @@ wss.on("connection", (ws) => {
   ws.on("message", (message: string) => {
     console.log("Received message:", message);
 
-    // Echo the message back to the client
-    ws.send(`Server received: ${message}`);
+    // Use the handleMessage function to process incoming messages
+    handleMessage(ws, message);
   });
 
   // Handle connection close
   ws.on("close", () => {
     console.log("WebSocket connection closed.");
+    handleClose(ws);
   });
 
   // Handle errors
   ws.on("error", (error) => {
     console.error("WebSocket error:", error);
+    handleError(ws, error);
   });
 });
+
+import { handleMessage, handleClose, handleError } from "./handlers.ts";
 
 export default wss;

@@ -1,0 +1,11 @@
+{
+  "imports": {
+    "oak": "https://deno.land/x/oak/mod.ts",
+    "cors": "https://deno.land/x/cors/mod.ts",
+    "dotenv": "https://deno.land/x/dotenv/mod.ts",
+    "bcrypt": "https://deno.land/x/bcrypt/mod.ts",
+    "djwt": "https://deno.land/x/djwt/mod.ts",
+    "postgres": "https://deno.land/x/postgres/mod.ts",
+    "websocket": "https://deno.land/x/websocket/mod.ts"
+  }
+}

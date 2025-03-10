@@ -1,13 +1,16 @@
 {
   "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
   "tasks": {
-    "start": "deno run --allow-net --allow-env --allow-read backend/main.ts",
-    "test": "deno test --allow-net --allow-env --allow-read"
+    "start": "deno run --allow-net --allow-env --allow-read --allow-write backend/main.ts",
+    "test": "deno test --allow-net --allow-env --allow-read --allow-write",
+    "lint": "deno lint",
+    "fmt": "deno fmt"
   },
   "permissions": {
-    "allow-net": ["localhost:3000"],
-    "allow-env": ["JWT_SECRET", "DATABASE_URL"],
-    "allow-read": ["./"]
+    "allow-net": ["localhost:3000", "localhost:8080"],
+    "allow-env": ["JWT_SECRET", "DATABASE_URL", "PORT", "WEBSOCKET_PORT"],
+    "allow-read": ["./"],
+    "allow-write": ["./logs"]
   },
   "importMap": "./import_map.json"
 }
