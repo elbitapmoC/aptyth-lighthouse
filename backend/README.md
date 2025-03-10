@@ -47,6 +47,36 @@ deno task start
 
 This will start the server on the specified port (default: `8000`). You can access the API at `http://localhost:8000`.
 
+### Import Map Path
+
+Ensure that the `--import-map` flag in the `deno.jsonc` file points to the correct path for the `import_map.json` file. For example:
+
+```json
+"importMap": "./import_map.json"
+```
+
+If you encounter issues with imports, verify that the `import_map.json` file exists and is correctly configured.
+
+### Resolving TypeScript Errors
+
+If you encounter TypeScript errors, ensure the following:
+
+1. The `tsconfig.json` file includes all necessary files:
+   ```json
+   "include": ["**/*.ts", "types.d.ts"]
+   ```
+
+2. The `types.d.ts` file is present and includes type declarations for external modules, such as:
+   ```ts
+   declare module "oak" {
+     export * from "https://deno.land/x/oak/mod.ts";
+   }
+   ```
+
+3. Run the following command to check for TypeScript issues:
+   ```bash
+   deno check backend/main.ts
+
 ## Development
 
 ### File Structure

@@ -1,5 +1,5 @@
-import { Client } from "postgres/mod.ts/mod.ts";
 import config from "@/config";
+import { Client } from "postgres/mod.ts";
 
 // Ensure the DATABASE_URL is provided
 const DATABASE_URL = config.database.url;

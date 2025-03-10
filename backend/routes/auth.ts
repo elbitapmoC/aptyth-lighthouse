@@ -1,7 +1,7 @@
-import { Router } from "oak";
-import { compare } from "bcrypt";
-import { create, verify } from "djwt";
 import db from "@/db/postgres.ts";
+import { compare, hash } from "bcrypt";
+import { create, verify } from "djwt";
+import { Router } from "oak";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "your_jwt_secret_key";
 const SALT_ROUNDS = 12;
@@ -44,7 +44,11 @@ router.post("/login", async (ctx) => {
 
     // Generate a JWT token
     const payload = { id, email };
-    const token = await create({ alg: "HS256", typ: "JWT" }, payload, JWT_SECRET);
+    const token = await create(
+      { alg: "HS256", typ: "JWT" },
+      payload,
+      JWT_SECRET
+    );
 
     ctx.response.body = { token };
   } catch (error) {

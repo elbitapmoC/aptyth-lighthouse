@@ -1,4 +1,5 @@
-import type { Context, Middleware } from "oak";
+import type { Context } from "oak";
+import type { Middleware } from "oak";
 import { z } from "zod";
 
 /**

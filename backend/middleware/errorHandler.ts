@@ -1,4 +1,4 @@
-import { Context, Middleware } from "oak";
+import type { Context, Middleware } from "oak";
 
 declare const Deno: {
   env: {
@@ -11,7 +11,10 @@ declare const Deno: {
  * This middleware catches any errors thrown during request processing,
  * logs the error, and sends an appropriate response to the client.
  */
-const errorHandler: Middleware = async (ctx: Context, next: () => Promise<unknown>) => {
+const errorHandler: Middleware = async (
+  ctx: Context,
+  next: () => Promise<unknown>
+) => {
   try {
     await next(); // Proceed to the next middleware or route handler
   } catch (err) {
