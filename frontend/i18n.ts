@@ -15,6 +15,7 @@ i18n
     },
     backend: {
       loadPath: "/locales/{{lng}}/{{ns}}.json", // Path to translation files
+      addPath: "/locales/{{lng}}/{{ns}}.missing.json", // Path for missing translations
     },
     react: {
       useSuspense: true, // Enable suspense for loading translations

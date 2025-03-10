@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
-const API_BASE_URL = "http://localhost:8000"; // Replace with your Deno backend URL
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000"; // Replace with your Deno backend URL
 
 /**
  * API client for interacting with the Deno backend.
@@ -10,6 +10,7 @@ const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
+    Accept: "application/json",
   },
 });
 

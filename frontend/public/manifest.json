@@ -2,8 +2,8 @@
   "name": "Lighthouse Bible Platform",
   "short_name": "Lighthouse",
   "description": "A platform for Bible study and exploration.",
-  "start_url": "/",
-  "display": "standalone",
+  "start_url": "/?source=pwa",
+  "display": "minimal-ui",
   "background_color": "#ffffff",
   "theme_color": "#1a73e8",
   "icons": [

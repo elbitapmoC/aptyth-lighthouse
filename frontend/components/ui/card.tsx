@@ -28,7 +28,7 @@ export function CardHeader({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("mb-4 text-lg font-semibold", className)} {...props}>
+    <div className={cn("mb-4 text-xl font-bold", className)} {...props}>
       {children}
     </div>
   );
