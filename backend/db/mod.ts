@@ -1,4 +1,4 @@
-import { Pool } from "https://deno.land/x/postgres/mod.ts";
+import { Client } from "https://deno.land/x/postgres/mod.ts";
 
 const DATABASE_URL = Deno.env.get("DATABASE_URL") || "";
 
@@ -7,17 +7,16 @@ if (!DATABASE_URL) {
   throw new Error("DATABASE_URL environment variable is not set.");
 }
 
-// Create a new PostgreSQL connection pool
-const dbPool = new Pool(DATABASE_URL, 10); // Pool size set to 10 connections
+// Create a new PostgreSQL client
+const dbClient = new Client(DATABASE_URL);
 
 /**
  * Connects to the database.
  */
 export async function connect() {
   try {
-    const client = await dbPool.connect();
+    await dbClient.connect();
     console.log("Connected to the database.");
-    client.release(); // Release the client back to the pool
   } catch (error) {
     console.error("Failed to connect to the database:", error);
     throw error;
@@ -29,7 +28,7 @@ export async function connect() {
  */
 export async function disconnect() {
   try {
-    await dbPool.end();
+    await dbClient.end();
     console.log("Disconnected from the database.");
   } catch (error) {
     console.error("Failed to disconnect from the database:", error);
@@ -44,15 +43,12 @@ export async function disconnect() {
  * @returns The query result.
  */
 export async function query(query: string, params: unknown[] = []) {
-  const client = await dbPool.connect();
   try {
-    const result = await client.queryObject(query, ...params);
+    const result = await dbClient.queryObject(query, ...params);
     return result;
   } catch (error) {
     console.error("Database query failed:", error);
     throw error;
-  } finally {
-    client.release(); // Ensure the client is released back to the pool
   }
 }
 
