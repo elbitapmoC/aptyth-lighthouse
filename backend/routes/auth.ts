@@ -1,7 +1,7 @@
 import { Router } from "oak";
 import { compare } from "bcrypt";
 import { create, verify } from "djwt";
-import db from "postgres";
+import db from "@/db/postgres.ts";
 
 const JWT_SECRET = Deno.env.get("JWT_SECRET") || "your_jwt_secret_key";
 const SALT_ROUNDS = 12;
