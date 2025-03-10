@@ -26,6 +26,8 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 // Start the server
-const PORT = Deno.env.get("PORT") || 8000;
+import config from "./config.ts";
+
+const PORT = config.server.port;
 console.log(`Server is running on http://localhost:${PORT}`);
-await app.listen({ port: +PORT });
+await app.listen({ port: PORT });
