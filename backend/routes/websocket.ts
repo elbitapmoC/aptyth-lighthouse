@@ -1,4 +1,4 @@
-import { Router, WebSocket, WebSocketEvent } from "https://deno.land/x/oak/mod.ts";
+import { Router, WebSocket, WebSocketEvent } from "oak";
 
 const router = new Router();
 

@@ -1,4 +1,4 @@
-import { Pool } from "https://deno.land/x/postgres/mod.ts";
+import { Pool } from "postgres";
 
 const DATABASE_URL = Deno.env.get("DATABASE_URL") || "";
 

@@ -1,8 +1,8 @@
-import { Application } from "https://deno.land/x/oak/mod.ts";
-import { oakCors } from "https://deno.land/x/cors/mod.ts";
-import router from "./routes/mod.ts";
-import { logger } from "./middleware/logger.ts";
-import { errorHandler } from "./middleware/errorHandler.ts";
+import { Application } from "oak";
+import { oakCors } from "cors";
+import router from "@/routes/mod.ts";
+import { logger } from "@/middleware/logger.ts";
+import { errorHandler } from "@/middleware/errorHandler.ts";
 
 // Create a new Oak application
 const app = new Application();

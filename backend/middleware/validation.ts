@@ -1,5 +1,5 @@
-import { z } from "https://deno.land/x/zod/mod.ts";
-import { Context, Middleware } from "https://deno.land/x/oak/mod.ts";
+import { z } from "zod";
+import { Context, Middleware } from "oak";
 
 /**
  * Validation middleware using Zod to validate request data.

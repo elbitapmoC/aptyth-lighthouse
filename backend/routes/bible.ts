@@ -1,5 +1,5 @@
-import { Router } from "https://deno.land/x/oak/mod.ts";
-import db from "../db/mod.ts";
+import { Router } from "oak";
+import db from "postgres";
 
 const router = new Router();
 
