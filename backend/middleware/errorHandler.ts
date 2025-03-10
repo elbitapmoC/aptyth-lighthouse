@@ -1,5 +1,11 @@
 import { Context, Middleware } from "oak";
 
+declare const Deno: {
+  env: {
+    get(key: string): string | undefined;
+  };
+};
+
 /**
  * Middleware to handle errors in the Deno backend.
  * This middleware catches any errors thrown during request processing,
