@@ -28,6 +28,8 @@ import Footer from "../components/layout/footer";
 import Header from "../components/layout/header";
 import ThemeToggle from "../components/ui/ThemeToggle";
 import { useStore } from "../lib/store";
+import { QueryProvider } from "../hooks/use-api";
+import "../i18n";
 
 export default function RootLayout({
   children,
@@ -41,10 +43,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        <ThemeToggle />
-        <main>{children}</main>
-        <Footer />
+        <QueryProvider>
+          <Header />
+          <ThemeToggle />
+          <main>{children}</main>
+          <Footer />
+        </QueryProvider>
       </body>
     </html>
   );
