@@ -17,3 +17,7 @@ declare module "djwt" {
 declare module "postgres" {
   export * from "https://deno.land/x/postgres/mod.ts";
 }
+
+declare module "zod" {
+  export * from "https://deno.land/x/zod/mod.ts";
+}
