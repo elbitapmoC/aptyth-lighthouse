@@ -4,10 +4,10 @@
     "cors": "https://deno.land/x/cors/mod.ts",
     "bcrypt": "https://deno.land/x/bcrypt/mod.ts",
     "djwt": "https://deno.land/x/djwt/mod.ts",
-    "postgres": "https://deno.land/x/postgres/mod.ts"
-  },
-  "@/routes/": "./routes/",
-  "@/middleware/": "./middleware/",
-  "@/config": "./config.ts",
-  "@/db/": "./db/"
+    "postgres": "https://deno.land/x/postgres/mod.ts",
+    "@/routes/": "./routes/",
+    "@/middleware/": "./middleware/",
+    "@/config": "./config.ts",
+    "@/db/": "./db/"
+  }
 }
