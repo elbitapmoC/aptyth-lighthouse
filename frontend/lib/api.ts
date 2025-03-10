@@ -10,6 +10,7 @@ const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 10000, // Set a timeout for requests
 });
 
 /**
@@ -22,9 +23,14 @@ export async function login(email: string, password: string): Promise<string> {
   try {
     const response = await apiClient.post("/auth/login", { email, password });
     return response.data.token;
-  } catch (error) {
-    console.error("Login failed:", error);
-    throw new Error("Invalid email or password.");
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Login failed:", error.response.data);
+      throw new Error(error.response.data.error || "Invalid email or password.");
+    } else {
+      console.error("Login failed:", error.message);
+      throw new Error("Network error occurred during login.");
+    }
   }
 }
 
@@ -38,9 +44,14 @@ export async function register(email: string, password: string): Promise<number>
   try {
     const response = await apiClient.put("/auth/register", { email, password });
     return response.data.id;
-  } catch (error) {
-    console.error("Registration failed:", error);
-    throw new Error("User registration failed.");
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Registration failed:", error.response.data);
+      throw new Error(error.response.data.error || "User registration failed.");
+    } else {
+      console.error("Registration failed:", error.message);
+      throw new Error("Network error occurred during registration.");
+    }
   }
 }
 
@@ -54,9 +65,26 @@ export async function fetchBibleContent(book: string, chapter: number): Promise<
   try {
     const response = await apiClient.get(`/bible?book=${encodeURIComponent(book)}&chapter=${chapter}`);
     return response.data;
-  } catch (error) {
-    console.error("Failed to fetch Bible content:", error);
-    throw new Error("Unable to fetch Bible content.");
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Failed to fetch Bible content:", error.response.data);
+      throw new Error(error.response.data.error || "Unable to fetch Bible content.");
+    } else {
+      console.error("Failed to fetch Bible content:", error.message);
+      throw new Error("Network error occurred while fetching Bible content.");
+    }
+  }
+}
+
+/**
+ * Sets the authentication token for the API client.
+ * @param token - The JWT token to be set in the Authorization header.
+ */
+export function setAuthToken(token: string | null): void {
+  if (token) {
+    apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete apiClient.defaults.headers.common["Authorization"];
   }
 }
 
