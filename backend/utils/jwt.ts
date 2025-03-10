@@ -14,7 +14,7 @@ export async function generateToken(payload: Payload, expiresIn: string): Promis
     const token = await create(header, { ...payload, exp: getExpirationTime(expiresIn) }, JWT_SECRET);
     return token;
   } catch (error) {
-    console.error("Error generating JWT token:", error);
+    console.error("Error generating JWT token:", error.message);
     throw new Error("Failed to generate token.");
   }
 }
