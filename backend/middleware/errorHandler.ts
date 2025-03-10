@@ -1,4 +1,4 @@
-import { Context, Middleware } from "oak";
+import type { Context, Middleware } from "oak";
 
 declare const Deno: {
   env: {

@@ -1,4 +1,4 @@
-import { Context, Middleware } from "oak";
+import type { Context, Middleware } from "oak";
 
 /**
  * CORS middleware to allow requests from the Next.js frontend.

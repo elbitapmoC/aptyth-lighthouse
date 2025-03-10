@@ -1,4 +1,4 @@
-import { Context, Middleware } from "oak";
+import type { Context, Middleware } from "oak";
 
 /**
  * Middleware to log HTTP requests in the Deno backend.
