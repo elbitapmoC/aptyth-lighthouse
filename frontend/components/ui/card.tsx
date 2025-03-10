@@ -28,7 +28,10 @@ export function CardHeader({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("mb-4 text-lg font-semibold", className)} {...props}>
+    <div
+      className={cn("mb-4 text-xl font-bold text-card-foreground", className)}
+      {...props}
+    >
       {children}
     </div>
   );
@@ -40,7 +43,10 @@ export function CardBody({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("text-sm", className)} {...props}>
+    <div
+      className={cn("text-base text-muted-foreground", className)}
+      {...props}
+    >
       {children}
     </div>
   );
@@ -52,7 +58,10 @@ export function CardFooter({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("mt-4 text-right", className)} {...props}>
+    <div
+      className={cn("mt-4 flex justify-end gap-2 text-sm text-secondary-foreground", className)}
+      {...props}
+    >
       {children}
     </div>
   );
