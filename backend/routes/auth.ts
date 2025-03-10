@@ -78,7 +78,7 @@ router.put("/register", async (ctx) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    const hashedPassword = await hash(password, SALT_ROUNDS);
 
     // Insert the new user into the database
     const insertUserQuery =
