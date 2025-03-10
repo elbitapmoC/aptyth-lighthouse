@@ -5,9 +5,16 @@ type ThemeState = {
   setTheme: (theme: "light" | "dark") => void;
 };
 
-const useStore = create<ThemeState>((set) => ({
+type AuthState = {
+  isAuthenticated: boolean;
+  setAuthenticated: (isAuthenticated: boolean) => void;
+};
+
+const useStore = create<ThemeState & AuthState>((set) => ({
   theme: "light",
   setTheme: (theme) => set({ theme }),
+  isAuthenticated: false,
+  setAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
 }));
 
 export default useStore;
