@@ -1,6 +1,7 @@
 {
   "imports": {
     "oak": "https://deno.land/x/oak/mod.ts",
+    "zod": "https://deno.land/x/zod/mod.ts",
     "cors": "https://deno.land/x/cors/mod.ts",
     "bcrypt": "https://deno.land/x/bcrypt/mod.ts",
     "djwt": "https://deno.land/x/djwt/mod.ts",
