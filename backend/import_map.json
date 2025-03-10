@@ -4,9 +4,6 @@
     "cors": "https://deno.land/x/cors/mod.ts",
     "bcrypt": "https://deno.land/x/bcrypt/mod.ts",
     "djwt": "https://deno.land/x/djwt/mod.ts",
-    "postgres": "https://deno.land/x/postgres/mod.ts",
-    "hono": "https://deno.land/x/hono/mod.ts",
-    "zod": "https://deno.land/x/zod/mod.ts",
-    "structuredLog": "https://deno.land/x/structured_log/mod.ts"
+    "postgres": "https://deno.land/x/postgres/mod.ts"
   }
 }
