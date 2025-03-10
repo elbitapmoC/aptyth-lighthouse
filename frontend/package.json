@@ -29,6 +29,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@eslint/eslintrc": "^3",
+    "@ladle/react": "^2.3.0",
     "@tailwindcss/postcss": "^4",
     "@tanstack/eslint-plugin-query": "^5.67.2",
     "@testing-library/dom": "^10.4.0",
