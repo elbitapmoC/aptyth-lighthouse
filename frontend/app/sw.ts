@@ -9,6 +9,20 @@ installSerwist({
   runtimeCaching: [
     ...defaultCache,
     {
+      urlPattern: /^https:\/\/api\.lighthousebible\.com\/bible\/.*/i,
+      handler: "NetworkFirst",
+      options: {
+        cacheName: "bible-content",
+        expiration: {
+          maxEntries: 100,
+          maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+        },
+        cacheableResponse: {
+          statuses: [0, 200],
+        },
+      },
+    },
+    {
       urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
       handler: "CacheFirst",
       options: {

@@ -1,4 +1,4 @@
-import BibleReader from "@/components/bible/bible-reader";
+import BibleReader from "@/components/bible/BibleReader";
 import React from "react";
 
 export default function BiblePage() {
