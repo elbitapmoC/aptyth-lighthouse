@@ -5,8 +5,8 @@
     "test": "deno test --allow-net --allow-env --allow-read"
   },
   "permissions": {
-    "allow-net": ["localhost:3000"],
-    "allow-env": ["JWT_SECRET", "DATABASE_URL"],
+    "allow-net": ["localhost:3000", "localhost:8000"],
+    "allow-env": ["JWT_SECRET", "DATABASE_URL", "PORT"],
     "allow-read": ["./"]
   },
   "importMap": "./import_map.json"
