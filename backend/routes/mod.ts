@@ -1,6 +1,6 @@
 import { Router } from "oak";
-import authRoutes from "./auth.ts";
-import bibleRoutes from "./bible.ts";
+import authRoutes from "@/routes/auth.ts";
+import bibleRoutes from "@/routes/bible.ts";
 
 const router = new Router();
 

@@ -13,7 +13,7 @@ const logger: Middleware = async (
   const ms = performance.now() - start; // Calculate the response time
 
   // Log the HTTP method, URL, and response time
-  console.info(`${ctx.request.method} ${ctx.request.url} - ${ms.toFixed(2)}ms`);
+  console.log(`[Request] Method: ${ctx.request.method}, URL: ${ctx.request.url}, Response Time: ${ms.toFixed(2)}ms`);
 };
 
 export { logger };

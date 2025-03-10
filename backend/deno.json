@@ -6,8 +6,9 @@
   },
   "permissions": {
     "allow-net": ["localhost:3000", "localhost:8000"],
-    "allow-env": ["JWT_SECRET", "DATABASE_URL", "PORT"],
-    "allow-read": ["./"]
+    "allow-env": ["JWT_SECRET", "DATABASE_URL", "PORT", "ENV"],
+    "allow-read": ["./"],
+    "allow-write": ["./logs"]
   },
-  "importMap": "./import_map.json"
+  "importMap": "backend/import_map.json"
 }

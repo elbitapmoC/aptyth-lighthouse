@@ -3,7 +3,7 @@ import { compare, hash } from "bcrypt";
 import { create, verify } from "djwt";
 import { Router } from "oak";
 
-const JWT_SECRET = Deno.env.get("JWT_SECRET") || "your_jwt_secret_key";
+const JWT_SECRET = Deno.env.get("JWT_SECRET")!;
 const SALT_ROUNDS = 12;
 
 const router = new Router();

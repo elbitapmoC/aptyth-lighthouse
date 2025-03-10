@@ -12,6 +12,7 @@ const config = {
   },
   jwt: {
     secret: Deno.env.get("JWT_SECRET") || "",
+    expiration: Deno.env.get("JWT_EXPIRATION") || "1h",
   },
 };
 

@@ -31,7 +31,7 @@ router.get("/bible", async (ctx) => {
     const queryText = `
       SELECT verse_number, text
       FROM bible_content
-      WHERE book = $1 AND chapter = $2
+      WHERE LOWER(book) = LOWER($1) AND chapter = $2
       ORDER BY verse_number
     `;
     const verses = await db.query(queryText, [book, chapterNumber]);
