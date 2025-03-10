@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 import Footer from "../components/layout/footer";
 import Header from "../components/layout/header";
 import ThemeToggle from "../components/ui/ThemeToggle";
-import useStore from "../lib/store";
+import { useStore } from "../lib/store";
 
 export default function RootLayout({
   children,

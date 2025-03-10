@@ -8,5 +8,6 @@
   },
   "@/routes/": "./routes/",
   "@/middleware/": "./middleware/",
-  "@/config": "./config.ts"
+  "@/config": "./config.ts",
+  "@/db/": "./db/"
 }
