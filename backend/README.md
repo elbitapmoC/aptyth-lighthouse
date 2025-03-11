@@ -1,157 +1,156 @@
-# Deno Backend for Lighthouse Bible Platform
+# Lighthouse Bible Platform - Backend (Deno + Hono)
 
-This is the backend service for the Lighthouse Bible Platform, built using [Deno](https://deno.land/) and the [Oak](https://deno.land/x/oak) framework. It provides API endpoints for authentication, database interactions, and other backend functionalities.
+This is the backend service for the Lighthouse Bible Platform, built with [Deno](https://deno.land/) and the [Hono](https://hono.dev) framework. It provides REST API endpoints for user authentication, Bible verse retrieval, and WebSocket connections for real-time features.
 
 ## Prerequisites
 
-Before running the backend, ensure you have the following installed:
-
-- [Deno](https://deno.land/) (v1.35.0 or later)
-- A PostgreSQL database instance
-- Environment variables configured (see below)
+*   [Deno](https://deno.land/) (v1.38 or later recommended)
+*   A PostgreSQL database (Neon recommended)
 
 ## Environment Variables
 
-Create a `.env` file in the `backend` directory or set the following environment variables in your system:
+Create a `.env` file in the `backend` directory (or set these as environment variables in your deployment environment):
 
-- `DATABASE_URL`: The connection string for your PostgreSQL database.
-- `JWT_SECRET`: A secret key for signing JWT tokens.
-- `PORT` (optional): The port number for the server (default is `8000`).
+*   **`DATABASE_URL`:** Your Neon PostgreSQL connection string.  The `sslmode=require` part is *essential* for secure connections to Neon.
+*   **`JWT_SECRET`:** A *strong, random secret key* used for signing and verifying JWTs.  **Do not use the example value in production!**  Generate a long, random string.
+*   **`PORT`:** (Optional) The port the server listens on. Defaults to 8000.
 
-Example `.env` file:
+## Getting Started
 
-```
-DATABASE_URL=postgres://user:password@localhost:5432/database_name
-JWT_SECRET=your_jwt_secret_key
-PORT=8000
-```
+1.  **Clone the Repository:**
 
-## Installation
+    ```bash
+    git clone [https://github.com/elbitapmoC/aptyth-lighthouse.git](https://github.com/elbitapmoC/aptyth-lighthouse.git)
+    cd aptyth-lighthouse/backend
+    ```
 
-1. Clone the repository:
+2.  **Install Dependencies:**
 
-   ```bash
-   git clone https://github.com/elbitapmoC/aptyth-lighthouse.git
-   cd aptyth-lighthouse/backend
-   ```
+    Deno handles dependencies automatically, but it's best practice to explicitly cache them:
 
-2. Install dependencies (Deno automatically fetches dependencies when running the application).
+    ```bash
+    deno task cache
+    ```
+    This command uses the `cache` task defined in `deno.jsonc` to download and cache all project dependencies, and to create (or update) the `deno.lock` file for reproducible builds.
+
+3. **Create the Tables**
+    ```sql
+        CREATE TABLE users (
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            email TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL,
+            created_at TIMESTAMPTZ DEFAULT now(),
+            updated_at TIMESTAMPTZ DEFAULT now()
+        );
+        CREATE TABLE verses (
+        	book TEXT NOT NULL,
+        	chapter INTEGER NOT NULL,
+        	verse INTEGER NOT NULL,
+        	text TEXT NOT NULL,
+        	version TEXT NOT NULL,
+        	PRIMARY KEY (book, chapter, verse, version)
+        );
+        ```
 
 ## Running the Server
 
-To start the backend server, run the following command:
+*   **Development (with auto-reload):**
 
-```bash
-deno task start
-```
+    ```bash
+    deno task dev
+    ```
 
-This will start the server on the specified port (default: `8000`). You can access the API at `http://localhost:8000`.
+*   **Production:**
 
-### Import Map Path
+    ```bash
+    deno task start
+    ```
 
-Ensure that the `--import-map` flag in the `deno.jsonc` file points to the correct path for the `import_map.json` file. For example:
+The server will start on `http://localhost:8000` (or the port you specified in your `.env`).
 
-```json
-"importMap": "./import_map.json"
-```
+## Project Structure (`backend/`)
+backend/
+├── api/           # API route handlers (Hono)
+│   ├── auth.ts     # Authentication routes (register, login, logout)
+│   ├── bible.ts    # Bible verse routes
+│   └── user.ts     # User profile route (example)
+├── db/
+│   ├── client.ts   # Database connection setup (Neon/Postgres)
+│   └── queries.ts  # Database query functions
+├── middleware/
+│   └── authMiddleware.ts # JWT authentication middleware
+├── models/       # Data models (Zod schemas)
+│   ├── user.ts
+│   └── verse.ts
+├── websockets/   # WebSocket logic
+│   ├── connectionManager.ts  # Manages WebSocket connections
+│   └── handlers.ts        # Handles WebSocket events
+├── utils/
+│   ├── auth.ts    # Authentication helpers (hashing, JWT)
+│   └── logger.ts   # Logging
+├── server.ts    # Main server entry point (Hono)
+├── deno.jsonc  # Deno configuration
+└── deps.ts      # Dependency management
 
-If you encounter issues with imports, verify that the `import_map.json` file exists and is correctly configured.
 
-### Resolving TypeScript Errors
+## Key Technologies
 
-If you encounter TypeScript errors, ensure the following:
+*   **Deno:** A secure and modern JavaScript/TypeScript runtime.
+*   **Hono:** An ultrafast web framework for Deno.
+*   **PostgreSQL (Neon):**  A serverless PostgreSQL database.
+*   **Zod:**  A TypeScript-first schema declaration and validation library.
+*   **bcrypt:**  For password hashing.
+*   **djwt:**  For JSON Web Token (JWT) creation and verification.
+*   **WebSockets:** For real-time communication.
 
-1. The `tsconfig.json` file includes all necessary files:
-   ```json
-   "include": ["**/*.ts", "types.d.ts"]
-   ```
+## API Endpoints (Example)
 
-2. The `types.d.ts` file is present and includes type declarations for external modules, such as:
-   ```ts
-   declare module "oak" {
-     export * from "https://deno.land/x/oak/mod.ts";
-   }
-   ```
+*   **Authentication:**
+    *   `POST /api/auth/register`: Register a new user.
+    *   `POST /api/auth/login`:  Login and get a JWT.
+    *   `GET /api/auth/logout`: logout.
+*   **Bible Verses:**
+    *   `GET /api/bible/:version/:book/:chapter/:verse`: Get a specific Bible verse.
+* **User**
+    *   `GET /api/profile`: Get profile.
+*   **WebSockets:**
+    *   `GET /ws`:  Establish a WebSocket connection (requires authentication).
 
-3. Run the following command to check for TypeScript issues:
-   ```bash
-   deno check backend/main.ts
+## `deno.jsonc` Configuration
 
-## Development
+The `deno.jsonc` file configures Deno's behavior:
 
-### File Structure
-
-- `main.ts`: The entry point of the application.
-- `routes/`: Contains route handlers for different API endpoints.
-  - `auth.ts`: Handles authentication routes (e.g., login, register).
-  - `mod.ts`: Combines and exports all routes.
-- `middleware/`: Contains middleware for the application.
-  - `cors.ts`: Handles Cross-Origin Resource Sharing (CORS).
-- `db/`: Contains database connection and query utilities.
-- `utils/`: Contains utility functions (e.g., JWT token generation and verification).
-
-### Running Tests
-
-To run tests, use the following command:
-
-```bash
-deno task test
-```
-
-### Linting and Formatting
-
-Deno includes built-in linting and formatting tools. Use the following commands:
-
-- Linting:
-
-  ```bash
-  deno lint
-  ```
-
-- Formatting:
-
-  ```bash
-  deno fmt
-  ```
-
-## API Endpoints
-
-### Authentication
-
-- **POST** `/auth/login`: Authenticate a user and return a JWT token.
-- **PUT** `/auth/register`: Register a new user.
-
-### Example Request
-
-#### Login
-
-```bash
-curl -X POST http://localhost:8000/auth/login \
--H "Content-Type: application/json" \
--d '{"email": "user@example.com", "password": "password123"}'
-```
-
-#### Register
-
-```bash
-curl -X PUT http://localhost:8000/auth/register \
--H "Content-Type: application/json" \
--d '{"email": "user@example.com", "password": "password123"}'
-```
-
-## Deployment
-
-To deploy the backend, ensure the environment variables are set on the target server and run the `deno task start` command. You can use a process manager like [PM2](https://pm2.keymetrics.io/) or a containerization tool like Docker for production deployments.
-
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix.
-3. Commit your changes and push the branch.
-4. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](../LICENSE) file for details.
+```jsonc
+{
+  "tasks": {
+    "start": "deno task cache && deno run --allow-net --allow-read --allow-env server.ts",
+    "dev": "deno task cache && deno run --allow-net --allow-read --allow-env --watch server.ts",
+    "lint": "deno lint",
+    "fmt": "deno fmt",
+    "test": "deno test --allow-env --allow-read --allow-net",
+    "cache": "deno cache --lock=deno.lock server.ts"
+  },
+  "imports": {
+    "hono": "npm:hono@4.0.8",
+    "hono/": "npm:hono@4.0.8/",
+    "zod": "npm:zod@3.22.4",
+    "bcrypt": "npm:bcrypt@0.4.1",
+    "djwt": "npm:djwt@3.0.1",
+    "dotenv/": "[https://deno.land/std@0.218.0/dotenv/](https://deno.land/std@0.218.0/dotenv/)",
+    "deno-postgres": "[https://deno.land/x/postgres@v0.17.0/mod.ts](https://deno.land/x/postgres@v0.17.0/mod.ts)",
+    "std/": "[https://deno.land/std@0.218.0/](https://deno.land/std@0.218.0/)"
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "useTabs": true,
+    "lineWidth": 80,
+    "indentWidth": 4,
+    "singleQuote": true,
+    "proseWrap": "preserve"
+  },
+  "nodeModulesDir": true
+}

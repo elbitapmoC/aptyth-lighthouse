@@ -10,7 +10,7 @@
 		"resolveJsonModule": true,
 		"baseUrl": "./",
 		"paths": {
-			"@/routes/*": ["./routes/*"],
+			"@/routes/*": ["api/*"],
 			"@/middleware/*": ["./middleware/*"],
 			"@/config": ["./config.ts"],
 			"@/db/*": ["./db/*"]

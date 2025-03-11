@@ -1,36 +1,18 @@
-import type { Context, Middleware } from "oak";
+// backend/middleware/errorHandler.ts
 
-declare const Deno: {
-  env: {
-    get(key: string): string | undefined;
-  };
-};
+import { type Context, Next } from "../deps.ts";
+import { logger } from "../utils/logger.ts";
+import { error } from "../utils/response.ts";
 
-/**
- * Middleware to handle errors in the Deno backend.
- * This middleware catches any errors thrown during request processing,
- * logs the error, and sends an appropriate response to the client.
- */
-const errorHandler: Middleware = async (
-  ctx: Context,
-  next: () => Promise<unknown>
-) => {
-  try {
-    await next(); // Proceed to the next middleware or route handler
-  } catch (err) {
-    console.error("Error occurred:", err);
+export const errorHandler = async (err: Error, c: Context) => {
+  logger.error(err); // Log the error
 
-    // Set the response status and body based on the error type
-    ctx.response.status = err.status || 500;
-    ctx.response.body = {
-      error: err.message || "Internal Server Error",
-    };
-
-    // Optionally, add more details in development mode
-    if (Deno.env.get("ENV") === "development") {
-      ctx.response.body.details = err.stack;
-    }
+  if (err instanceof SyntaxError) {
+    //Check if error is SyntaxError
+    return error(c, "Invalid JSON payload", err, 400);
   }
-};
 
-export { errorHandler };
+  // Handle other specific error types if needed
+
+  return error(c, "Internal Server error", err); // Generic error response
+};
