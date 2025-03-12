@@ -14,3 +14,5 @@ export { serve } from "https://deno.land/std@0.218.0/http/server.ts"; // Re-adde
 export { config } from "https://deno.land/std@0.218.0/dotenv/mod.ts";
 export * as log from "https://deno.land/std@0.218.0/log/mod.ts";
 export { z } from "npm:zod@3.22.4";
+export { default as pino } from "npm:pino@8.16.0";
+export { default as pinoPretty } from "npm:pino-pretty@10.2.3";

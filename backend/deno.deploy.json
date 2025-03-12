@@ -1,0 +1,8 @@
+{
+  "project": "aptyth-lighthouse",
+  "entrypoint": "backend/server.ts",
+  "include": ["backend/**/*"],
+  "env": {
+    "DENO_ENV": "production"
+  }
+}

@@ -1,21 +1,36 @@
+import { pino, pinoPretty } from "../deps.ts";
 // backend/utils/logger.ts
-import * as log from "../deps.ts";
+import { getConfig } from "./config.ts";
 
-// Configure logging
+let logger: ReturnType<typeof pino>;
+
 export async function setupLogger() {
-  await log.setup({
-    handlers: {
-      console: new log.handlers.ConsoleHandler("DEBUG", {
-        formatter: "{levelName} {msg}",
-      }), // Customize as needed
-    },
-    loggers: {
-      default: {
-        level: "DEBUG",
-        handlers: ["console"],
-      },
-    },
-  });
+  const config = await getConfig();
+  const isDevelopment = config.ENV === "development";
+  
+  const options = isDevelopment ? {
+    level: "debug",
+    transport: {
+      target: "pino-pretty",
+      options: {
+        colorize: true,
+        translateTime: "SYS:standard",
+        ignore: "pid,hostname",
+      }
+    }
+  } : {
+    level: "info",
+  };
+  
+  logger = pino(options);
+  
+  logger.info({
+    env: config.ENV,
+    timestamp: new Date().toISOString(),
+  }, "Logger initialized");
+  
+  return logger;
 }
 
-export const logger = log.getLogger();
+// Export a default logger for imports before setup
+export { logger = pino({ level: "info" }) };

@@ -1,34 +1,21 @@
-// backend/middleware/authMiddleware.ts
-import type { Next } from "../deps.ts";
-import { verify } from "../deps.ts";
-import { getSignedCookie } from "../deps.ts";
-import type { CustomContext } from "../types/context.ts";
-import { config } from "../utils/config.ts";
+// Create backend/middleware/auth.ts
+import type { Context, Next } from "../deps.ts";
+import { verifyJwt } from "../utils/jwt.ts";
+import { logger } from "../utils/logger.ts";
 
-export const authMiddleware = async (c: CustomContext, next: Next) => {
-  const secret = config.jwtSecret;
-
-  // --- CORRECT KEY IMPORT ---
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(secret),
-    { name: "HMAC", hash: "SHA-512" },
-    true,
-    ["verify"]
-  );
-
-  const jwt = await getSignedCookie(c, "jwt", secret);
-
-  if (!jwt) {
-    return c.json({ error: "Unauthorized" }, 401);
-  }
-
+export async function authMiddleware(c: Context, next: Next) {
   try {
-    // Use the imported key, not the secret string
-    const payload = await verify(jwt, key);
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const token = authHeader.split(" ")[1];
+    const payload = await verifyJwt(token);
     c.set("user", payload);
     await next();
   } catch (error) {
-    return c.json({ error: "Invalid token" }, 401);
+    logger.error({ error }, "Authentication error");
+    return c.json({ error: "Unauthorized" }, 401);
   }
-};
+}
