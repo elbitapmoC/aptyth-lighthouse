@@ -1,14 +1,22 @@
-import { getSignedCookie } from "hono/helper/cookie";
 // backend/middleware/authMiddleware.ts
-import type { Context, Next } from "../deps.ts";
+import type { Next } from "../deps.ts";
 import { verify } from "../deps.ts";
+import { getSignedCookie } from "../deps.ts";
+import type { CustomContext } from "../types/context.ts";
+import { config } from "../utils/config.ts";
 
-export const authMiddleware = async (c: Context, next: Next) => {
-  // Get the secret key.
-  const secret = Deno.env.get("JWT_SECRET")!;
-  if (!secret) {
-    throw new Error("JWT_SECRET is not defined");
-  }
+export const authMiddleware = async (c: CustomContext, next: Next) => {
+  const secret = config.jwtSecret;
+
+  // --- CORRECT KEY IMPORT ---
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-512" },
+    true,
+    ["verify"]
+  );
+
   const jwt = await getSignedCookie(c, "jwt", secret);
 
   if (!jwt) {
@@ -16,8 +24,9 @@ export const authMiddleware = async (c: Context, next: Next) => {
   }
 
   try {
-    const payload = await verify(jwt, secret); //hono jwt
-    c.set("user", payload); // Attach user info to context.  Use c.set
+    // Use the imported key, not the secret string
+    const payload = await verify(jwt, key);
+    c.set("user", payload);
     await next();
   } catch (error) {
     return c.json({ error: "Invalid token" }, 401);

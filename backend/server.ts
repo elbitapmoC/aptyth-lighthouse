@@ -1,9 +1,8 @@
-import authRoutes from "./api/auth/mod.ts"; // Use mod.ts
-import bibleRoutes from "./api/bible/mod.ts"; //Use mod.ts
+import authRoutes from "./api/auth/mod.ts";
+import bibleRoutes from "./api/bible/mod.ts";
 import profileRoute from "./api/user.ts";
 // backend/server.ts
 import { Hono } from "./deps.ts";
-import { serve } from "./deps.ts";
 import { cors } from "./deps.ts";
 import { verify } from "./deps.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
@@ -57,5 +56,5 @@ app.get("/ws", async (c) => {
   }
 });
 
-serve(app.fetch);
+Deno.serve(app.fetch); // Use Deno.serve directly
 logger.info("Server is running");

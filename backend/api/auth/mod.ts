@@ -1,12 +1,12 @@
 import { createUser, getUserByEmail } from "../../db/queries.ts";
 // backend/api/auth/mod.ts
 import { Hono } from "../../deps.ts";
-import { z } from "../../deps.ts";
 import { compare, hash } from "../../deps.ts";
-import { type Payload, sign } from "../../deps.ts"; // Use sign from djwt (via deps.ts)
-import { deleteCookie, getSignedCookie, setSignedCookie } from "../../deps.ts";
+import { type Payload, sign } from "../../deps.ts"; // Keep only the used imports from djwt
+import { deleteCookie, setSignedCookie } from "../../deps.ts"; //Keep used
 import { UserSchema } from "../../models/user.ts";
-import { config } from "../../utils/config.ts"; // Import config
+import { config } from "../../utils/config.ts";
+import { error, success } from "../../utils/response.ts";
 
 const app = new Hono();
 
@@ -16,27 +16,28 @@ app.post("/register", async (c) => {
   const result = UserSchema.safeParse(body);
 
   if (!result.success) {
-    return c.json({ error: result.error }, 400);
+    return error(c, "Validation Error", result.error, 400);
   }
 
   const { email, password } = result.data;
 
-  const existingUser = await getUserByEmail(email);
-  if (existingUser) {
-    return c.json({ error: "User already exists" }, 409);
-  }
-  //Use bcryptjs
-  const hashedPassword = await hash(password); // Use bcryptjs's hash function (no salt round needed)
-  const newUser = await createUser(email, hashedPassword);
+  try {
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
+      return error(c, "User already exists", undefined, 409);
+    }
 
-  if (!newUser) {
-    return c.json({ error: "Failed to create user" }, 500);
+    const hashedPassword = await hash(password);
+    const newUser = await createUser(email, hashedPassword);
+    return success(
+      c,
+      "User registered successfully",
+      { email: newUser.email },
+      201
+    );
+  } catch (err: any) {
+    return error(c, err.message, err, 500);
   }
-
-  return c.json(
-    { message: "User registered successfully", user: { email: newUser.email } },
-    201
-  );
 });
 
 // --- User Login ---
@@ -45,46 +46,55 @@ app.post("/login", async (c) => {
   const result = UserSchema.safeParse(body);
 
   if (!result.success) {
-    return c.json({ error: result.error }, 400);
+    return error(c, "Validation Error", result.error, 400);
   }
 
   const { email, password } = result.data;
 
-  const user = await getUserByEmail(email);
-  if (!user) {
-    return c.json({ error: "Invalid credentials" }, 401);
+  try {
+    const user = await getUserByEmail(email);
+
+    const passwordMatch = await compare(password, user.password);
+    if (!passwordMatch) {
+      return error(c, "Invalid credentials", undefined, 401);
+    }
+
+    // Create JWT
+    const payload: Payload = {
+      iss: "lighthouse-platform",
+      sub: user.id,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour
+    };
+    const secret = config.jwtSecret;
+
+    const key = await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(secret),
+      { name: "HMAC", hash: "SHA-512" },
+      true,
+      ["sign"]
+    );
+
+    const jwt = await sign(payload, key);
+
+    // Set cookie
+    await setSignedCookie(c, "jwt", jwt, secret, {
+      path: "/",
+      secure: true,
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 7, // 1 week
+      sameSite: "Strict",
+    });
+
+    return success(c, "Login successful");
+  } catch (err: any) {
+    return error(c, err.message, undefined, 500);
   }
-
-  const passwordMatch = await compare(password, user.password); // Use bcryptjs's compare function
-  if (!passwordMatch) {
-    return c.json({ error: "Invalid credentials" }, 401);
-  }
-
-  // Create JWT
-  const payload: Payload = {
-    iss: "lighthouse-platform", // Issuer (you can customize this)
-    sub: user.id, // Subject (usually the user ID)
-    exp: Math.floor(Date.now() / 1000) + 60 * 60, // Expiration (1 hour from now)
-  };
-
-  const jwt = await sign(payload, config.jwtSecret); // Use djwt's sign function and config
-
-  // Set cookie (using Hono's helper)
-  await setSignedCookie(c, "jwt", jwt, config.jwtSecret, {
-    path: "/",
-    secure: true, // IMPORTANT: Use secure cookies in production
-    httpOnly: true, // IMPORTANT: Prevent client-side JavaScript access
-    maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
-    sameSite: "Strict", // IMPORTANT: Enhance security against CSRF attacks
-  });
-
-  return c.json({ message: "Login successful" });
 });
 
-// --- User Logout ---
 app.get("/logout", async (c) => {
-  deleteCookie(c, "jwt"); // Use Hono's deleteCookie helper
-  return c.text("Logged out!");
+  deleteCookie(c, "jwt");
+  return success(c, "Logged out!");
 });
 
 export default app;

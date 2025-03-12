@@ -1,3 +1,5 @@
+//backend/db/queries.ts
+
 import { z } from "../deps.ts";
 import type { User } from "../models/user.ts"; // Import type
 import { UserSchema } from "../models/user.ts";
@@ -13,7 +15,7 @@ export async function createUser(
   const client = await pool.connect();
   try {
     const result = await client.queryObject(
-      `INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, password, created_at, updated_at`,
+      "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, password, created_at, updated_at",
       [email, passwordHash]
     );
     // Validate
@@ -24,7 +26,9 @@ export async function createUser(
           "createUser: Database record failed validation:",
           userResult.error
         );
-        return null; // Or throw an error
+        throw new Error(
+          `Database record failed validation: ${userResult.error.message}`
+        ); // Throw!
       }
       return userResult.data;
     }
@@ -38,7 +42,7 @@ export async function getUserByEmail(email: string): Promise<User | null> {
   const client = await pool.connect();
   try {
     const result = await client.queryObject(
-      `SELECT * FROM users WHERE email = $1`,
+      "SELECT * FROM users WHERE email = $1",
       [email]
     );
 
