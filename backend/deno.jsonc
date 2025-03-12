@@ -1,3 +1,4 @@
+// backend/deno.jsonc
 {
 	"tasks": {
 		"start": "deno task cache && deno run --allow-net --allow-read --allow-env server.ts",
@@ -5,14 +6,13 @@
 		"lint": "deno lint",
 		"fmt": "deno fmt",
 		"test": "deno test --allow-env --allow-read --allow-net",
-		"cache": "deno cache --lock=deno.lock server.ts"
+		"cache": "deno cache --lock=deno.lock server.ts deps.ts"
 	},
 	"imports": {
 		"hono": "npm:hono@4.0.8",
-		"hono/": "npm:hono@4.0.8/",
 		"zod": "npm:zod@3.22.4",
 		"bcryptjs": "npm:bcryptjs@2.4.3",
-		"djwt": "npm:djwt@3.0.1",
+		"djwt": "https://deno.land/x/djwt@v2.8/mod.ts",
 		"dotenv/": "https://deno.land/std@0.218.0/dotenv/",
 		"deno-postgres": "https://deno.land/x/postgres@v0.17.0/mod.ts",
 		"std/": "https://deno.land/std@0.218.0/"
