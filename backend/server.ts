@@ -1,12 +1,12 @@
-import authRoutes from "./api/auth.ts";
-import bibleRoutes from "./api/bible.ts";
+import authRoutes from "./api/auth/mod.ts"; // Use mod.ts
+import bibleRoutes from "./api/bible/mod.ts"; //Use mod.ts
 import profileRoute from "./api/user.ts";
 // backend/server.ts
 import { Hono } from "./deps.ts";
 import { serve } from "./deps.ts";
 import { cors } from "./deps.ts";
 import { verify } from "./deps.ts";
-import { errorHandler } from "./middleware/errorHandler.ts"; // Corrected import
+import { errorHandler } from "./middleware/errorHandler.ts";
 import { loggingMiddleware } from "./middleware/loggingMiddleware.ts";
 import { logger, setupLogger } from "./utils/logger.ts";
 import { handleConnection } from "./websockets/handlers.ts";

@@ -1,14 +1,10 @@
 // backend/db/client.ts
 import { Pool } from "../deps.ts";
-import "dotenv/load.ts";
+import { config } from "../utils/config.ts"; // Import the config object!
 
-// Get the database connection string from environment variables
-const databaseUrl = Deno.env.get("DATABASE_URL");
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL environment variable not set");
-}
+// No need for dotenv/load.ts here, it's done in config.ts
 
-// Create a connection pool
-const pool = new Pool(databaseUrl, 3, true);
+// Use the database URL from the config object
+const pool = new Pool(config.databaseUrl, 3, true);
 
 export { pool };

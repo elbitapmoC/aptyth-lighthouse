@@ -1,26 +1,38 @@
-import { config as loadEnv } from "https://deno.land/std/dotenv/mod.ts";
+// backend/utils/config.ts
+import { config as loadEnv } from "../deps.ts"; // Use deps.ts for consistency
+import { z } from "../deps.ts";
 
-// Load environment variables from a .env file if it exists
+// Load environment variables immediately
 await loadEnv({ export: true });
 
-const config = {
-  server: {
-    port: parseInt(Deno.env.get("PORT") || "8000", 10),
-  },
-  database: {
-    url: Deno.env.get("DATABASE_URL") || "",
-  },
-  jwt: {
-    secret: Deno.env.get("JWT_SECRET") || "",
-  },
-};
+// Define a Zod schema for your configuration
+const configSchema = z.object({
+  port: z.coerce.number().default(8000), // Use coerce for type conversion and default
+  databaseUrl: z.string().min(1), // Ensure it's not an empty string
+  jwtSecret: z.string().min(1), // Ensure it's not an empty string
+});
 
-if (!config.database.url) {
-  throw new Error("DATABASE_URL is not set in the environment variables.");
+// Get all environment variables as an object
+const env = Deno.env.toObject();
+
+// Parse and validate the environment variables
+const parsedConfig = configSchema.safeParse({
+  port: env.PORT,
+  databaseUrl: env.DATABASE_URL,
+  jwtSecret: env.JWT_SECRET,
+});
+
+// Handle validation errors
+if (!parsedConfig.success) {
+  console.error(
+    "❌ Invalid environment variables:\n",
+    parsedConfig.error.flatten()
+  );
+  Deno.exit(1); // Exit with an error code
 }
 
-if (!config.jwt.secret) {
-  throw new Error("JWT_SECRET is not set in the environment variables.");
-}
+// Export the validated configuration
+export const config = parsedConfig.data;
 
-export default config;
+// Export the type for use elsewhere (VERY important)
+export type Config = z.infer<typeof configSchema>;
