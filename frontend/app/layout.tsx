@@ -18,10 +18,11 @@ export const metadata: Metadata = {
   },
 };
 
+import { cn } from "@/lib/utils";
 import { I18nProvider } from "../components/i18n-provider";
 import Footer from "../components/layout/footer";
 import Header from "../components/layout/header";
-import ThemeToggle from "../components/ui/ThemeToggle";
+import { ThemeProvider } from "../components/theme-provider";
 import { QueryProvider } from "../contexts/query-provider";
 
 export default function RootLayout({
@@ -30,16 +31,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body className={`${GeistMono.className} antialiased`}>
-        <I18nProvider>
-          <QueryProvider>
-            <Header />
-            <ThemeToggle />
-            <main>{children}</main>
-            <Footer />
-          </QueryProvider>
-        </I18nProvider>
+    <html lang="en" className={GeistSans.className} suppressHydrationWarning>
+      <body
+        className={cn(
+          GeistMono.className,
+          "flex min-h-screen flex-col bg-background text-foreground antialiased"
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <I18nProvider>
+            <QueryProvider>
+              <Header />
+              <div className="flex-1">{children}</div>
+              <Footer />
+            </QueryProvider>
+          </I18nProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

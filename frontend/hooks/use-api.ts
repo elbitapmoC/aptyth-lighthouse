@@ -80,5 +80,17 @@ export const useRegister = (): UseMutationResult<
   });
 };
 
+// Authentication: Logout
+export const useLogout = (): UseMutationResult<void, Error, void> => {
+  return useMutation({
+    mutationFn: async () => {
+      await apiClient.post("/auth/logout");
+    },
+    onSuccess: () => {
+      queryClient.clear();
+    },
+  });
+};
+
 // Export the query client for use in other files
 export { queryClient };
