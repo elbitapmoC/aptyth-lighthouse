@@ -1,7 +1,7 @@
 {
 	"tasks": {
-		"start": "deno task cache && deno run --allow-net --allow-read --allow-env --unstable-byonm server.ts",
-		"dev": "deno task cache && deno run --allow-net --allow-read --allow-env --watch --unstable-byonm server.ts",
+		"start": "deno run --allow-net --allow-read --allow-env --allow-sys --unstable-byonm server.ts",
+		"dev": "deno run --allow-net --allow-read --allow-env --allow-sys --watch --unstable-byonm server.ts",
 		"deploy": "deployctl deploy --project=aptyth-lighthouse --entrypoint=deploy.ts",
 
 		"lint": "deno lint",

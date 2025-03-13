@@ -1,16 +1,7 @@
+import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Lighthouse Bible Platform",
@@ -22,33 +13,33 @@ export const metadata: Metadata = {
     title: "Lighthouse Bible Platform",
     statusBarStyle: "default",
   },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
 };
 
+import { I18nProvider } from "../components/i18n-provider";
 import Footer from "../components/layout/footer";
 import Header from "../components/layout/header";
 import ThemeToggle from "../components/ui/ThemeToggle";
-import { useStore } from "../lib/store";
-import { QueryProvider } from "../hooks/use-api";
-import "../i18n";
+import { QueryProvider } from "../contexts/query-provider";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { theme } = useStore();
-
   return (
-    <html lang="en" className={theme}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <QueryProvider>
-          <Header />
-          <ThemeToggle />
-          <main>{children}</main>
-          <Footer />
-        </QueryProvider>
+    <html lang="en" className={GeistSans.className}>
+      <body className={`${GeistMono.className} antialiased`}>
+        <I18nProvider>
+          <QueryProvider>
+            <Header />
+            <ThemeToggle />
+            <main>{children}</main>
+            <Footer />
+          </QueryProvider>
+        </I18nProvider>
       </body>
     </html>
   );

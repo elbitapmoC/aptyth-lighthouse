@@ -6,7 +6,6 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import axios from "axios";
-import type { ReactNode } from "react";
 
 const queryClient = new QueryClient();
 
@@ -67,10 +66,14 @@ export const useLogin = (): UseMutationResult<
 export const useRegister = (): UseMutationResult<
   AuthResponse,
   Error,
-  { email: string; password: string }
+  { email: string; password: string; name: string }
 > => {
   return useMutation({
-    mutationFn: async (userData: { email: string; password: string }) => {
+    mutationFn: async (userData: {
+      email: string;
+      password: string;
+      name: string;
+    }) => {
       const response = await apiClient.post("/auth/register", userData);
       return response.data;
     },

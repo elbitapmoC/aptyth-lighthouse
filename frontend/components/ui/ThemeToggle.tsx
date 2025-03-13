@@ -19,6 +19,7 @@ export default function ThemeToggle() {
       onClick={toggleTheme}
       className="p-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
       aria-label="Toggle Theme"
+      type="button"
     >
       {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
     </button>
