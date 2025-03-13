@@ -104,7 +104,7 @@ app.get("/:version/:book/:chapter/:verse", async (c) => {
   const chapterNumber = Number.parseInt(chapter, 10);
   const verseNumber = Number.parseInt(verse, 10);
 
-  if (isNaN(chapterNumber) || isNaN(verseNumber)) {
+  if (Number.isNaN(chapterNumber) || Number.isNaN(verseNumber)) {
     return error(c, "Invalid chapter or verse number.", undefined, 400);
   }
 

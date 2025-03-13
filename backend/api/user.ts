@@ -1,13 +1,12 @@
 // backend/api/user.ts
-import { Hono } from "../deps.ts";
+import { type Context, Hono } from "../deps.ts";
 import { authMiddleware } from "../middleware/authMiddleware.ts";
-import type { CustomContext, Payload } from "../types/context.ts"; // Import
+import type { JWTPayload } from "../utils/auth.ts";
 
-const app = new Hono<{ Bindings: { user: Payload } }>();
+const app = new Hono();
 
-app.get("/", authMiddleware, async (c: CustomContext) => {
-  // Use CustomContext
-  const user = c.get("user"); // Now TypeScript knows the type of 'user'
+app.get("/", authMiddleware, async (c: Context) => {
+  const user = c.get("user") as JWTPayload | undefined;
   if (!user) {
     return c.json({ error: "Unauthorized" }, 401);
   }

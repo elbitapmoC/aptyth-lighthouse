@@ -1,7 +1,7 @@
 // backend/db/migrations/migrate.ts
 import { Pool } from "../../deps.ts";
 import { logger } from "../../utils/logger.ts";
-import { getDbConfig } from "../client.ts";
+import { getPool } from "../client.ts";
 
 // Migration files in order
 const migrations = [
@@ -13,7 +13,7 @@ const migrations = [
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         email TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
-        username TEXT UNIQUE NOT NULL,
+        username TEXT UNIQUE,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
@@ -50,7 +50,7 @@ const migrations = [
 ];
 
 export async function migrate() {
-  const pool = new Pool(getDbConfig());
+  const pool = await getPool();
   const client = await pool.connect();
 
   try {

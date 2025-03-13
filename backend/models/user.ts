@@ -5,7 +5,7 @@ import { z } from "../deps.ts";
 const UserSchema = z.object({
   id: z.string().uuid(), // Assuming UUID for user IDs
   email: z.string().email(),
-  password: z.string(), // Store *hashed* passwords!
+  password: z.string(), // Store *hashed* passwords! (matches password_hash in DB)
   createdAt: z.date(),
   updatedAt: z.date(),
 });

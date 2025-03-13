@@ -1,6 +1,6 @@
 // backend/utils/config.ts
-import { config as loadEnv } from "../deps.ts"; // Use deps.ts for consistency
-import { z } from "../deps.ts";
+import { config as loadEnv } from "./deps.ts"; // Use deps.ts for consistency
+import { z } from "./deps.ts";
 
 // Load environment variables immediately
 await loadEnv({ export: true });

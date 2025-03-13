@@ -1,10 +1,10 @@
+import { checkDatabaseHealth } from "./db/client.ts";
 // backend/server.ts
-import { Hono } from "./deps.ts";
-import { cors } from "./deps.ts";
-import { verify } from "./deps.ts";
+import { type Context, Hono, cors } from "./deps.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
 import { loggingMiddleware } from "./middleware/loggingMiddleware.ts";
 import { rateLimit } from "./middleware/rateLimit.ts";
+import { verifyJwt } from "./utils/auth.ts";
 import { logger, setupLogger } from "./utils/logger.ts";
 import { handleConnection } from "./websockets/handlers.ts";
 
@@ -26,7 +26,7 @@ const app = new Hono();
 
 // --- Middleware ---
 app.use("*", loggingMiddleware);
-app.use("*", cors());
+app.use("*", cors);
 app.use("/api/*", rateLimit(100, 60000)); // Apply rate limiting to all API routes
 app.onError(errorHandler);
 
@@ -35,30 +35,37 @@ app.route("/api/auth", authRoutes);
 app.route("/api/bible", bibleRoutes);
 app.route("/api/profile", profileRoute);
 
-// Health check endpoint
-app.get("/health", (c) =>
+// Health check endpoints
+app.get("/health", (c: Context) =>
   c.json({ status: "ok", timestamp: new Date().toISOString() })
 );
 
+// Detailed health check with database status
+app.get("/health/detailed", async (c: Context) => {
+  const dbHealth = await checkDatabaseHealth();
+
+  return c.json({
+    status: dbHealth ? "ok" : "degraded",
+    services: {
+      api: "ok",
+      database: dbHealth ? "ok" : "error",
+    },
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // --- WebSocket Route ---
-app.get("/ws", async (c) => {
+app.get("/ws", async (c: Context) => {
   const authHeader = c.req.header("Authorization");
-  if (!authHeader) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return c.json({ error: "Unauthorized" }, 401);
   }
 
-  const token = authHeader; // Get token from Authorization header
+  const token = authHeader.split(" ")[1]; // Get token from Authorization header
 
   try {
-    // Generate secret key for JWT verification
-    const secretKey = await crypto.subtle.generateKey(
-      { name: "HMAC", hash: "SHA-512" },
-      true,
-      ["sign", "verify"]
-    );
-
-    // Verify the token
-    const payload = await verify(token, secretKey);
+    // Use our verifyJwt function for consistent authentication
+    const payload = await verifyJwt(token);
     const userId = payload.sub; // Get user ID from the 'sub' claim
 
     if (!userId) {
@@ -81,7 +88,6 @@ app.get("/ws", async (c) => {
 // Get port from environment or use default
 const port = Number.parseInt(Deno.env.get("PORT") || "8000");
 
-// Start the server
 Deno.serve(
   {
     port,

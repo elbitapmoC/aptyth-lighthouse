@@ -14,10 +14,12 @@
 		"hono/": "npm:hono@4.0.8/",
 		"zod": "npm:zod@3.22.4",
 		"bcryptjs": "npm:bcryptjs@2.4.3",
-		"djwt": "npm:djwt@2.9.0", // Corrected Version
+		"jose": "npm:jose@4.14.4",
 		"dotenv/": "https://deno.land/std@0.218.0/dotenv/",
 		"deno-postgres": "https://deno.land/x/postgres@v0.17.0/mod.ts",
-		"std/": "https://deno.land/std@0.218.0/"
+		"std/": "https://deno.land/std@0.218.0/",
+		"pino": "npm:pino@8.16.0",
+		"pino-pretty": "npm:pino-pretty@10.2.3"
 	},
 	"lint": {
 		"rules": {
@@ -31,5 +33,13 @@
 		"singleQuote": true,
 		"proseWrap": "preserve"
 	},
-	"nodeModulesDir": "auto"
+	"nodeModulesDir": "auto",
+	"compilerOptions": {
+		"lib": ["deno.window", "dom", "dom.iterable", "esnext"],
+		"strict": true,
+		"checkJs": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "hono/jsx"
+	},
+	"unstable": ["sloppy-imports", "npm"]
 }

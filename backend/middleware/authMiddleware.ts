@@ -1,6 +1,6 @@
-// Create backend/middleware/auth.ts
+// backend/middleware/authMiddleware.ts
 import type { Context, Next } from "../deps.ts";
-import { verifyJwt } from "../utils/jwt.ts";
+import { verifyJwt } from "../utils/auth.ts";
 import { logger } from "../utils/logger.ts";
 
 export async function authMiddleware(c: Context, next: Next) {

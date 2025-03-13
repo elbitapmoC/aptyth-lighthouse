@@ -7,30 +7,36 @@ let logger: ReturnType<typeof pino>;
 export async function setupLogger() {
   const config = await getConfig();
   const isDevelopment = config.ENV === "development";
-  
-  const options = isDevelopment ? {
-    level: "debug",
-    transport: {
-      target: "pino-pretty",
-      options: {
-        colorize: true,
-        translateTime: "SYS:standard",
-        ignore: "pid,hostname",
+
+  const options = isDevelopment
+    ? {
+        level: "debug",
+        transport: {
+          target: "pino-pretty",
+          options: {
+            colorize: true,
+            translateTime: "SYS:standard",
+            ignore: "pid,hostname",
+          },
+        },
       }
-    }
-  } : {
-    level: "info",
-  };
-  
+    : {
+        level: "info",
+      };
+
   logger = pino(options);
-  
-  logger.info({
-    env: config.ENV,
-    timestamp: new Date().toISOString(),
-  }, "Logger initialized");
-  
+
+  logger.info(
+    {
+      env: config.ENV,
+      timestamp: new Date().toISOString(),
+    },
+    "Logger initialized"
+  );
+
   return logger;
 }
 
 // Export a default logger for imports before setup
-export { logger = pino({ level: "info" }) };
+logger = pino({ level: "info" });
+export { logger };

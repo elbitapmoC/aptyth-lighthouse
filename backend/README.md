@@ -100,7 +100,7 @@ backend/
 *   **PostgreSQL (Neon):**  A serverless PostgreSQL database.
 *   **Zod:**  A TypeScript-first schema declaration and validation library.
 *   **bcrypt:**  For password hashing.
-*   **djwt:**  For JSON Web Token (JWT) creation and verification.
+*   **jose:**  For JSON Web Token (JWT) creation and verification.
 *   **WebSockets:** For real-time communication.
 
 ## API Endpoints (Example)
@@ -135,7 +135,7 @@ The `deno.jsonc` file configures Deno's behavior:
     "hono/": "npm:hono@4.0.8/",
     "zod": "npm:zod@3.22.4",
     "bcrypt": "npm:bcrypt@0.4.1",
-    "djwt": "npm:djwt@3.0.1",
+    "jose": "npm:jose@4.14.4",
     "dotenv/": "[https://deno.land/std@0.218.0/dotenv/](https://deno.land/std@0.218.0/dotenv/)",
     "deno-postgres": "[https://deno.land/x/postgres@v0.17.0/mod.ts](https://deno.land/x/postgres@v0.17.0/mod.ts)",
     "std/": "[https://deno.land/std@0.218.0/](https://deno.land/std@0.218.0/)"

@@ -4,7 +4,7 @@ import type { Context } from "../deps.ts";
 export const success = (
   c: Context,
   message: string,
-  data?: any,
+  data?: unknown,
   status = 200
 ) => {
   return c.json(
@@ -13,7 +13,7 @@ export const success = (
       message,
       data,
     },
-    status
+    { status }
   );
 };
 
@@ -21,7 +21,7 @@ export const success = (
 export const error = (
   c: Context,
   message: string,
-  error?: any,
+  error?: unknown,
   status = 500
 ) => {
   return c.json(
@@ -30,6 +30,7 @@ export const error = (
       message,
       error,
     },
-    status
+
+    { status }
   );
 };
