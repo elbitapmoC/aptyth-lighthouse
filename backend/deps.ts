@@ -4,11 +4,16 @@ import * as bcrypt from "npm:bcryptjs@2.4.3";
 import { type Context, Hono, type Next } from "npm:hono@4.0.8";
 import { SignJWT, decodeJwt, jwtVerify } from "npm:jose@4.14.4";
 import pinoPretty from "npm:pino-pretty@10.2.3";
-import pino from "npm:pino@8.16.0";
+import pinoDefault, { type Logger } from "npm:pino@8.16.0";
 import { z } from "npm:zod@3.22.4";
 import { load as config } from "https://deno.land/std@0.218.0/dotenv/mod.ts";
 import * as log from "https://deno.land/std@0.218.0/log/mod.ts";
-import { Pool } from "https://deno.land/x/postgres@v0.17.0/mod.ts";
+import {
+  Pool,
+  type PoolClient,
+} from "https://deno.land/x/postgres@v0.17.0/mod.ts";
+
+const pino = pinoDefault;
 
 // Re-export everything
 export {
@@ -19,11 +24,13 @@ export {
   jwtVerify,
   decodeJwt,
   Pool,
+  type PoolClient,
   config,
   log,
   z,
   pino,
   pinoPretty,
+  type Logger,
 };
 
 // Export bcrypt functions

@@ -1,10 +1,10 @@
 // backend/db/queries.ts
-import { z } from "../deps.ts";
 import type { User } from "../models/user.ts";
 import { UserSchema } from "../models/user.ts";
 import { type Verse, VerseSchema } from "../models/verse.ts";
 import { logger } from "../utils/logger.ts";
 import { pool } from "./client.ts";
+import { db } from "./client.ts";
 import { DatabaseError } from "./errors.ts";
 
 /**
@@ -21,20 +21,22 @@ export enum DatabaseErrorType {
  * Creates a new user in the database
  * @param email - The user's email
  * @param passwordHash - The hashed password
- * @returns The created user or null if creation failed
+ * @param name - The user's name
+ * @returns The created user
  * @throws DatabaseError if there's a database error
  */
 export async function createUser(
   email: string,
-  passwordHash: string
+  passwordHash: string,
+  name: string
 ): Promise<User> {
   const dbPool = await pool();
   const client = await dbPool.connect();
 
   try {
     const result = await client.queryObject(
-      'INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id, email, password_hash AS password, created_at AS "createdAt", updated_at AS "updatedAt"',
-      [email, passwordHash]
+      'INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id, email, name, password_hash AS password, created_at AS "createdAt", updated_at AS "updatedAt"',
+      [email, passwordHash, name]
     );
 
     if (result.rows.length === 0) {
@@ -193,4 +195,13 @@ export async function getVerse(
   } finally {
     client.release();
   }
+}
+
+// Add proper type annotation for id parameter
+export async function getUserById(id: string | number) {
+  const result = await db.query(
+    "SELECT id, email, name FROM users WHERE id = $1",
+    [id]
+  );
+  return result[0] || null;
 }

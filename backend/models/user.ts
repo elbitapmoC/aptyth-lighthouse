@@ -6,6 +6,7 @@ const UserSchema = z.object({
   id: z.string().uuid(), // Assuming UUID for user IDs
   email: z.string().email(),
   password: z.string(), // Store *hashed* passwords! (matches password_hash in DB)
+  name: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });

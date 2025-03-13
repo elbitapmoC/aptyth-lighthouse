@@ -1,5 +1,5 @@
 // backend/db/client.ts
-import { Pool } from "../deps.ts";
+import { Pool, type PoolClient } from "../deps.ts";
 import { getConfig } from "../utils/config.ts";
 import { logger } from "../utils/logger.ts";
 
@@ -34,6 +34,38 @@ export async function getPool(): Promise<Pool> {
 
   return poolInstance;
 }
+
+// Create and export the db object with query methods
+export const db = {
+  async query(text: string, params: unknown[] = []) {
+    const pool = await getPool();
+    const client = await pool.connect();
+    try {
+      const result = await client.queryObject(text, params);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  },
+
+  async transaction<T>(
+    callback: (client: PoolClient) => Promise<T>
+  ): Promise<T> {
+    const pool = await getPool();
+    const client = await pool.connect();
+    try {
+      await client.queryObject("BEGIN");
+      const result = await callback(client);
+      await client.queryObject("COMMIT");
+      return result;
+    } catch (error) {
+      await client.queryObject("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+    }
+  },
+};
 
 /**
  * Tests the database connection with retry logic

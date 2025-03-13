@@ -94,3 +94,15 @@ export async function verifyJwt(token: string): Promise<JWTPayload> {
     throw new Error("Invalid token");
   }
 }
+
+export const generateToken = async (payload: {
+  userId: string;
+}): Promise<string> => {
+  const config = await getConfig();
+  const token = await new SignJWT({ sub: payload.userId })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("1h")
+    .sign(new TextEncoder().encode(config.jwtSecret));
+  return token;
+};

@@ -1,5 +1,12 @@
-import { useQuery, useMutation, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  type UseMutationResult,
+  type UseQueryResult,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
 import axios from "axios";
+import type { ReactNode } from "react";
 
 const queryClient = new QueryClient();
 
@@ -10,31 +17,65 @@ const apiClient = axios.create({
   },
 });
 
+// Types for API responses
+interface BibleContent {
+  verses: Array<{
+    verse: number;
+    text: string;
+  }>;
+  chapter: number;
+  book: string;
+}
+
+interface AuthResponse {
+  user: {
+    id: string;
+    email: string;
+    name: string;
+  };
+  token: string;
+}
+
 // Fetch Bible content
-export const useFetchBibleContent = (chapter: number) => {
-  return useQuery(["bibleContent", chapter], async () => {
-    const response = await apiClient.get(`/bible/chapter/${chapter}`);
-    return response.data;
+export const useFetchBibleContent = (
+  chapter: number
+): UseQueryResult<BibleContent> => {
+  return useQuery({
+    queryKey: ["bibleContent", chapter],
+    queryFn: async () => {
+      const response = await apiClient.get(`/bible/chapter/${chapter}`);
+      return response.data;
+    },
   });
 };
 
 // Authentication: Login
-export const useLogin = () => {
-  return useMutation(async (credentials: { email: string; password: string }) => {
-    const response = await apiClient.post("/auth/login", credentials);
-    return response.data;
+export const useLogin = (): UseMutationResult<
+  AuthResponse,
+  Error,
+  { email: string; password: string }
+> => {
+  return useMutation({
+    mutationFn: async (credentials: { email: string; password: string }) => {
+      const response = await apiClient.post("/auth/login", credentials);
+      return response.data;
+    },
   });
 };
 
 // Authentication: Register
-export const useRegister = () => {
-  return useMutation(async (userData: { email: string; password: string }) => {
-    const response = await apiClient.put("/auth/register", userData);
-    return response.data;
+export const useRegister = (): UseMutationResult<
+  AuthResponse,
+  Error,
+  { email: string; password: string }
+> => {
+  return useMutation({
+    mutationFn: async (userData: { email: string; password: string }) => {
+      const response = await apiClient.post("/auth/register", userData);
+      return response.data;
+    },
   });
 };
 
-// Query Client Provider Wrapper
-export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
-};
+// Export the query client for use in other files
+export { queryClient };
