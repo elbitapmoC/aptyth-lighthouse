@@ -65,7 +65,7 @@ To set the gold standard for Bible study platforms—providing tools for individ
 ### Frontend Setup
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/aptyth-lighthouse.git
+git clone https://github.com/elbitapmoc/aptyth-lighthouse.git
 cd aptyth-lighthouse
 
 # Install dependencies
@@ -195,7 +195,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/aptyth-lighthouse&type=Date)](https://star-history.com/#yourusername/aptyth-lighthouse&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=elbitapmoc/aptyth-lighthouse&type=Date)](https://star-history.com/#elbitapmoc/aptyth-lighthouse&Date)
 
 ---
 

@@ -12,7 +12,7 @@ const navigation = {
   social: [
     {
       name: "GitHub",
-      href: "https://github.com/yourusername/aptyth-lighthouse",
+      href: "https://github.com/elbitapmoc/aptyth-lighthouse",
       icon: Github,
     },
   ],

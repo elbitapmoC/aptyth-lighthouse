@@ -1,7 +1,21 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useQuery, useMutation } from "@tanstack/react-query";
 
 const API_BASE_URL = "http://localhost:8000"; // Replace with your Deno backend URL
+
+// Define interfaces for API responses
+interface BibleContent {
+  book: string;
+  chapter: number;
+  verses: {
+    number: number;
+    text: string;
+  }[];
+}
+
+// Define types for mutation inputs
+type LoginInput = { email: string; password: string };
+type RegisterInput = { email: string; password: string };
 
 /**
  * API client for interacting with the Deno backend.
@@ -35,7 +49,10 @@ export async function login(email: string, password: string): Promise<string> {
  * @param password - The user's password.
  * @returns A promise resolving to the new user's ID.
  */
-export async function register(email: string, password: string): Promise<number> {
+export async function register(
+  email: string,
+  password: string
+): Promise<number> {
   try {
     const response = await apiClient.put("/auth/register", { email, password });
     return response.data.id;
@@ -51,9 +68,14 @@ export async function register(email: string, password: string): Promise<number>
  * @param chapter - The chapter number.
  * @returns A promise resolving to the Bible content for the specified book and chapter.
  */
-export async function fetchBibleContent(book: string, chapter: number): Promise<any> {
+export async function fetchBibleContent(
+  book: string,
+  chapter: number
+): Promise<BibleContent> {
   try {
-    const response = await apiClient.get(`/bible?book=${encodeURIComponent(book)}&chapter=${chapter}`);
+    const response = await apiClient.get(
+      `/bible?book=${encodeURIComponent(book)}&chapter=${chapter}`
+    );
     return response.data;
   } catch (error) {
     console.error("Failed to fetch Bible content:", error);
@@ -67,25 +89,28 @@ export async function fetchBibleContent(book: string, chapter: number): Promise<
  * @param chapter - The chapter number.
  */
 export function useBibleContent(book: string, chapter: number) {
-  return useQuery(["bibleContent", book, chapter], () => fetchBibleContent(book, chapter));
+  return useQuery<BibleContent, Error>({
+    queryKey: ["bibleContent", book, chapter],
+    queryFn: () => fetchBibleContent(book, chapter),
+  });
 }
 
 /**
  * React Query hook for user login.
  */
 export function useLogin() {
-  return useMutation(({ email, password }: { email: string; password: string }) =>
-    login(email, password)
-  );
+  return useMutation<string, Error, LoginInput>({
+    mutationFn: ({ email, password }) => login(email, password),
+  });
 }
 
 /**
  * React Query hook for user registration.
  */
 export function useRegister() {
-  return useMutation(({ email, password }: { email: string; password: string }) =>
-    register(email, password)
-  );
+  return useMutation<number, Error, RegisterInput>({
+    mutationFn: ({ email, password }) => register(email, password),
+  });
 }
 
 export default apiClient;

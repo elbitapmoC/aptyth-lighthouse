@@ -1,7 +1,19 @@
 // Authentication utilities for the frontend
 
+// Define types for auth functions
+interface UserRegistrationData {
+  email: string;
+  password: string;
+  name: string;
+}
+
+interface UserCredentials {
+  email: string;
+  password: string;
+}
+
 // Function to register a new user
-export async function registerUser(userData) {
+export async function registerUser(userData: UserRegistrationData) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`,
     {
@@ -27,7 +39,7 @@ export async function registerUser(userData) {
 }
 
 // Function to log in a user
-export async function loginUser(credentials) {
+export async function loginUser(credentials: UserCredentials) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
     {

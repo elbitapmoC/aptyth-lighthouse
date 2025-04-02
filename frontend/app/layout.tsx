@@ -22,23 +22,30 @@ import { cn } from "@/lib/utils";
 import { I18nProvider } from "../components/i18n-provider";
 import Footer from "../components/layout/footer";
 import Header from "../components/layout/header";
-import { ThemeProvider } from "../components/theme-provider";
 import { QueryProvider } from "../contexts/query-provider";
+import { ThemeContextProvider } from "../contexts/theme-context";
 
 export default function RootLayout({
   children,
+  params: { locale }, // Destructure locale from params
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string }; // Add locale to params type
 }>) {
   return (
-    <html lang="en" className={GeistSans.className} suppressHydrationWarning>
+    // Use the dynamic locale for the lang attribute
+    <html
+      lang={locale}
+      className={GeistSans.className}
+      suppressHydrationWarning
+    >
       <body
         className={cn(
           GeistMono.className,
           "flex min-h-screen flex-col bg-background text-foreground antialiased"
         )}
       >
-        <ThemeProvider
+        <ThemeContextProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
@@ -51,7 +58,7 @@ export default function RootLayout({
               <Footer />
             </QueryProvider>
           </I18nProvider>
-        </ThemeProvider>
+        </ThemeContextProvider>
       </body>
     </html>
   );

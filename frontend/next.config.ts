@@ -9,6 +9,10 @@ const withSerwist = withSerwistInit({
 
 const nextConfig: NextConfig = {
   /* config options here */
+  i18n: {
+    locales: ["en", "es"],
+    defaultLocale: "en",
+  }, // Add the i18n config here
 };
 
 export default withSerwist(nextConfig);

@@ -1,5 +1,7 @@
 "use client";
 
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import type { ThemeProviderProps } from "next-themes";
 import { useTheme as useNextTheme } from "next-themes";
 import { createContext, useContext } from "react";
 
@@ -8,26 +10,34 @@ type Theme = "light" | "dark" | "system";
 interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeContextProvider({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  ...props
+}: ThemeProviderProps) {
   const { theme, setTheme } = useNextTheme();
 
+  const toggleTheme = () => {
+    const currentTheme = (theme as Theme) || "system";
+    setTheme(currentTheme === "light" ? "dark" : "light");
+  };
+
+  const contextValue = {
+    theme: (theme as Theme) || "system",
+    setTheme,
+    toggleTheme,
+  };
+
   return (
-    <ThemeContext.Provider
-      value={{
-        theme: (theme as Theme) || "system",
-        setTheme,
-      }}
-    >
-      {children}
-    </ThemeContext.Provider>
+    <NextThemesProvider {...props}>
+      <ThemeContext.Provider value={contextValue}>
+        {children}
+      </ThemeContext.Provider>
+    </NextThemesProvider>
   );
 }
 
