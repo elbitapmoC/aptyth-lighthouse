@@ -1,4 +1,3 @@
-import { getVerse } from "../../db/queries.ts";
 // backend/api/bible/mod.ts
 import { Hono } from "../../deps.ts";
 import { z } from "../../deps.ts";

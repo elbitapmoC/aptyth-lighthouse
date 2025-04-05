@@ -19,7 +19,9 @@
 		"deno-postgres": "https://deno.land/x/postgres@v0.17.0/mod.ts",
 		"std/": "https://deno.land/std@0.218.0/",
 		"pino": "npm:pino@8.16.0",
-		"pino-pretty": "npm:pino-pretty@10.2.3"
+		"pino-pretty": "npm:pino-pretty@10.2.3",
+		"drizzle-orm": "npm:drizzle-orm@0.30.0",
+		"pg": "npm:pg@8.11.3"
 	},
 	"lint": {
 		"rules": {
@@ -33,12 +35,15 @@
 		"singleQuote": true,
 		"proseWrap": "preserve"
 	},
-	"nodeModulesDir": true,
+	"nodeModulesDir": "manual",
 	"compilerOptions": {
 		"jsx": "react-jsx",
 		"jsxImportSource": "hono/jsx",
 		"strict": true,
 		"checkJs": true
+	},
+	"devDependencies": {
+		"@types/pg": "^8.11.0"
 	},
 	"unstable": ["byonm"]
 }

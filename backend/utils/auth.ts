@@ -96,10 +96,10 @@ export async function verifyJwt(token: string): Promise<JWTPayload> {
 }
 
 export const generateToken = async (payload: {
-  userId: string;
+  userId: string | number;
 }): Promise<string> => {
   const config = await getConfig();
-  const token = await new SignJWT({ sub: payload.userId })
+  const token = await new SignJWT({ sub: String(payload.userId) })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("1h")

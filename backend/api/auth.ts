@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "../db/client.ts";
 import { createUser, getUserByEmail } from "../db/queries.ts";
 import { comparePassword, generateToken, hashPassword } from "../utils/auth.ts";
 import { logger } from "../utils/logger.ts";
@@ -118,33 +117,6 @@ auth.post("/login", async (c) => {
       logger.error("Login error: Unknown error occurred");
     }
     return c.json({ error: "Login failed" }, 500);
-  }
-});
-
-// Get current user (protected route)
-auth.get("/me", async (c) => {
-  const userId = c.get("userId");
-  if (!userId) {
-    return c.json({ error: "Unauthorized" }, 401);
-  }
-
-  try {
-    const user = await db.query(
-      "SELECT id, email, name FROM users WHERE id = $1",
-      [userId]
-    );
-    if (!user || user.length === 0) {
-      return c.json({ error: "User not found" }, 404);
-    }
-
-    return c.json({ user: user[0] });
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      logger.error(`Get user error: ${error.message}`);
-    } else {
-      logger.error("Get user error: Unknown error occurred");
-    }
-    return c.json({ error: "Failed to get user data" }, 500);
   }
 });
 
